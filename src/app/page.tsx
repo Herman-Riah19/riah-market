@@ -1,101 +1,121 @@
-import Image from "next/image";
+import { CardCreator, CardCreatorProps } from "@/components/card/cardCreator";
+import { CardPresentation } from "@/components/card/cardPresentation";
+import { CardProduct, CardProductProps } from "@/components/card/cardProduct";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const products: CardProductProps[] = [
+    {
+      title: "Abstract Art #1",
+      creator: "Alice Doe",
+      price: 2.5,
+      image: "/asset/images/image_2.jpg",
+      profile: "/asset/profile/profile_1.png"
+    },
+    {
+      title: "Digital Wave",
+      creator: "Bob Smith",
+      price: 3.2,
+      image: "/asset/images/image_3.jpg",
+      profile: "/asset/profile/profile_2.png"
+    },
+    {
+      title: "Neon Dreams",
+      creator: "Charlie Johnson",
+      price: 4.1,
+      image: "/asset/images/image_4.jpg",
+      profile: "/asset/profile/profile_3.png"
+    },
+    {
+      title: "Futuristic Vision",
+      creator: "Diana Lee",
+      price: 5.0,
+      image: "/asset/images/image_5.jpg",
+      profile: "/asset/profile/profile_4.png"
+    }
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const creators: CardCreatorProps[] = [
+    {
+      name: "Alice Doe",
+      value: 12.4,
+      image: "/asset/profile/profile_1.png",
+    },
+    {
+      name: "Bob Smith",
+      value: 9.8,
+      image: "/asset/profile/profile_2.png",
+    },
+    {
+      name: "Charlie Johnson",
+      value: 15.2,
+      image: "/asset/profile/profile_3.png",
+    },
+    {
+      name: "Diana Lee",
+      value: 11.6,
+      image: "/asset/profile/profile_4.png",
+    },
+    {
+      name: "Alice Doe",
+      value: 12.4,
+      image: "/asset/profile/profile_1.png",
+    },
+    {
+      name: "Bob Smith",
+      value: 9.8,
+      image: "/asset/profile/profile_2.png",
+    },
+    {
+      name: "Charlie Johnson",
+      value: 15.2,
+      image: "/asset/profile/profile_3.png",
+    },
+    {
+      name: "Diana Lee",
+      value: 11.6,
+      image: "/asset/profile/profile_4.png",
+    },
+  ];  
+  
+  return (
+    <main role="main" className="m-0 p-0">
+      <section className="relative bg-muted m-0 p-0">
+        <div className="grid grid-cols-2 gap-4 m-4">
+          <CardPresentation />
+          <article className="flex flex-col items-center justify-center">
+            <CardProduct title="Triumphant Awakening" creator="Trista Francis" price={4.89} image="/asset/images/image_1.jpg" profile="/asset/profile/profile_1.png" />
+          </article>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      <section className="m-8">
+        <h3 className="text-2xl font-bold mb-4">Live auction</h3>
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {products.map((prod, index) => (
+            <div key={index}>
+              <CardProduct 
+                title={prod.title} 
+                creator={prod.creator} 
+                price={prod.price} 
+                image={prod.image} 
+                profile={prod.profile} />
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="m-8">
+        <h3 className="text-2xl font-bold mb-4">Creators</h3>
+        <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-8">
+          {creators.map((creator, index) => (
+            <div key={index}>
+              <CardCreator
+                name={creator.name}
+                value={creator.value}
+                image={creator.image}/>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }

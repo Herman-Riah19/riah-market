@@ -10,7 +10,6 @@ const pinata = new pinataSDK({
 });
 
 export async function uploadToIPFS(formData: FormData) {
-  "use server"; // Indique que cette fonction est une Server Action
 
   const file = formData.get("file") as File | null;
   if (!file) return { success: false, message: "Aucun fichier sélectionné." };

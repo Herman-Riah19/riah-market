@@ -11,8 +11,8 @@ export const Navbar = () => {
             link: "/",
         },
         {
-            name: "Products",
-            link: "/product",
+            name: "Mint",
+            link: "/generate",
         },
         {
             name: "Blog",

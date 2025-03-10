@@ -1,38 +1,61 @@
-"use client"
-import React from 'react'
-import { Dock, DockIcon } from '@/components/ui/dock'
-import Link from 'next/link'
-import { House } from "lucide-react"
+import React from "react";
+import {DarkTheme} from "@/components/dark-theme";
+import Link from "next/link";
+import {NavbarSheet} from "./navbar-sheet";
+import {NavLangue} from "./navLangue";
+import {getLocale, getTranslations} from 'next-intl/server';
+import { ButtonConnect } from "@/components/button/buttonConnect";
 
-export const Navbar = () => {
-    const pages = [
-        {
-            name: "Home",
-            link: "/",
-        },
-        {
-            name: "Mint",
-            link: "/generate",
-        },
-        {
-            name: "Blog",
-            link: "/blog",
-        },
-        {
-            name: "About",
-            link: "/about",
-        },
-    ];
+export const Navbar: React.FC = async () => {
+  const t = await getTranslations('Navbar');
+  const locale = await getLocale();
+
+  const pages = [
+    {
+      name: t('Home'),
+      link: `/${locale}/`,
+    },
+    {
+      name: t('Create'),
+      link: `/${locale}/generate`,
+    },
+    {
+      name: t("About"),
+      link: `/${locale}/about`,
+    },
+    {
+      name: t("Blog"),
+      link: `/${locale}/blog`,
+    },
+  ];
+
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-1 z-30 mx-auto mb-2 flex origin-bottom h-full max-h-14">
-        <div className="fixed top-0 inset-x-0 h-16 w-full bg-background to-transparent backdrop-blur-lg [-webkit-mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-background"></div>
-        <Dock className="z-50 pointer-events-auto relative mx-auto flex gap-2 min-h-full h-full items-center rounded-3xl px-1 bg-background [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)] transform-gpu dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] ">
-            {pages.map((page, index) => (
-                <DockIcon key={index} className='m-4'>
-                    <Link href={page.link} >{page.name}</Link>
-                </DockIcon>
-            ))}
-        </Dock>
+    <header className="sticky top-0 flex h-16 z-10 items-center gap-1 border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6">
+      <Link
+        href="/"
+        className="flex items-center gap-6 text-lg font-semibold md:text-base"
+      >
+        <span className="font-semibold">Riah Market</span>
+      </Link>
+      <NavbarSheet pages={pages} />
+
+      <nav className="flex flex-col text-lg font-medium sm:hidden md:flex justify-end md:flex-row md:items-center md:gap-3 md:text-sm lg:gap-6">
+        {pages.map((page) => (
+          <Link
+            key={page.name}
+            href={page.link}
+            className="text-muted-foreground transition-colors hover:text-foreground w-[8vw]"
+          >
+            {page.name}
+          </Link>
+        ))}
+      </nav>
+      
+      <div className="flex w-full justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <NavLangue />
+        <ButtonConnect />
+        <DarkTheme />
+      </div>
     </header>
-  )
-}
+  );
+};

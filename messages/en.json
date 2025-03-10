@@ -1,0 +1,13 @@
+{
+    "Home": {
+        "Presentation": "Discover, Find, Sell extraordinary IA NFT"
+    },
+    "Navbar": {
+        "Home": "Home",
+        "Create": "Create",
+        "About": "About",
+        "Blog": "Blog",
+        "ConnectWallet": "Connect Wallet",
+        "Disconnected": "Disconnected"
+    }
+}

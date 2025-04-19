@@ -1,205 +1,78 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Rabbit, Bird, Turtle } from "lucide-react";
+import { uploadToIPFS } from "@/actions/uploadPinata";
+import { ethers } from "ethers";
+import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json"
 import Image from "next/image";
-import React, { useState } from "react";
+import { useSDK } from "@metamask/sdk-react";
+import { ImageDown } from "lucide-react";
+
+const CONTRACT_ADDRESS = "0xa58fb98b0ba2eed705e11ebcc19cef4b6a0bdb7e";
 
 const PageGenerate = () => {
-  const [image, setImage] = useState("");
-  const [prompt, setPrompt] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [minting, setMinting] = useState(false);
+  const { account } = useSDK();
 
-  // Fonction pour gérer le changement dans l'entrée du prompt
-  const handlePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrompt(event.target.value);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
   };
 
-  // Fonction pour soumettre le formulaire
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const uploadAndMint = async () => {
+    if (!selectedImage) return alert("Please select an image.");
+    // if (!account) return alert("Please connect your wallet.");
+    setMinting(true);
+
     try {
-      const formData = new FormData();
-      formData.append("prompt", prompt);
-      formData.append("output_format", "png");
+      // Upload to Pinata
+      const data = new FormData()
+      data.set("file", selectedImage);
+      const pinataResponse = await uploadToIPFS(data);
+      if (!pinataResponse) throw new Error("Upload failed.");
+      setImageUrl(pinataResponse.ipfsHash as string);
 
-      const response = await fetch(
-        "https://api.stability.ai/v2beta/stable-image/generate/core",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: `Bearer sk-kaY13rB0Okp7Uy4ApD5B5LB9GHrkVpvAs3iaVtXZeCVg9lck`,
-            Accept: "image/*",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-
-        setImage(url);
-      } else {
-        const errorText = await response.text();
-        throw new Error(`${response.status}: ${errorText}`);
-      }
+      // Mint NFT
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // const signer = provider.getSigner();
+      // const contract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+      // const tx = await contract.mintNFT(account, pinataResponse.ipfsHash);
+      // await tx.wait();
+      alert("NFT Minted Successfully!");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Minting error:", error);
+      alert("Minting failed.");
     }
-  };
-
-  const handleDownload = () => {
-    // Télécharger l'image
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "image.png"; // Nom du fichier téléchargé
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setMinting(false);
   };
 
   return (
-    <div className="grid w-full pl-[53px] mt-12">
-      <main
-        role="main"
-        className="grid flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3"
-      >
-        <div
-          className="relative hidden flex-col items-start gap-8 md:flex"
-          x-chunk="dashboard-03-chunk-0"
-        >
-          <form
-            onSubmit={handleSubmit}
-            className="grid w-full items-start gap-6"
-          >
-            <fieldset className="grid gap-6 rounded-lg border p-4">
-              <legend className="-ml-1 px-1 text-sm font-medium">
-                Settings
-              </legend>
-              <div className="grid gap-3">
-                <Label>Prompt of the image</Label>
-                <Input
-                  type="text"
-                  id="prompt"
-                  placeholder="Your imagination's prompt"
-                  value={prompt}
-                  onChange={handlePromptChange}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="top-p">Top P</Label>
-                  <Input id="top-p" type="number" placeholder="0.7" />
-                </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="top-k">Top K</Label>
-                  <Input id="top-k" type="number" placeholder="0.0" />
-                </div>
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="model">Model</Label>
-                  <Select>
-                    <SelectTrigger
-                      id="model"
-                      className="items-start [&_[data-description]]:hidden"
-                    >
-                      <SelectValue placeholder="Select a model" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="genesis">
-                        <div className="flex items-start gap-3 text-muted-foreground">
-                          <Rabbit className="size-5" />
-                          <div className="grid gap-0.5">
-                            <p>
-                              Neural{" "}
-                              <span className="font-medium text-foreground">
-                                Genesis
-                              </span>
-                            </p>
-                            <p className="text-xs" data-description>
-                              Our fastest model for general use cases.
-                            </p>
-                          </div>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="explorer">
-                        <div className="flex items-start gap-3 text-muted-foreground">
-                          <Bird className="size-5" />
-                          <div className="grid gap-0.5">
-                            <p>
-                              Neural{" "}
-                              <span className="font-medium text-foreground">
-                                Explorer
-                              </span>
-                            </p>
-                            <p className="text-xs" data-description>
-                              Performance and speed for efficiency.
-                            </p>
-                          </div>
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="quantum">
-                        <div className="flex items-start gap-3 text-muted-foreground">
-                          <Turtle className="size-5" />
-                          <div className="grid gap-0.5">
-                            <p>
-                              Neural{" "}
-                              <span className="font-medium text-foreground">
-                                Quantum
-                              </span>
-                            </p>
-                            <p className="text-xs" data-description>
-                              The most powerful model for complex
-                              computations.
-                            </p>
-                          </div>
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-              </div>
-              <Button type="submit" className="text-white px-4 py-2 rounded-md">
-                Générer Image
-              </Button>
-            </fieldset>
-          </form>
+    <div className="flex flex-col items-center p-6">
+      <h1 className="text-2xl font-bold mb-4">Mint Your NFT</h1>
+      <div className="grid gap-3">
+      <Button
+        style={{ backgroundImage: `url(${selectedImage && URL.createObjectURL(selectedImage)})`, border: 'dashed 2px #05043D' }}
+        className="w-[500px] h-[425px] bg-transparent hover:bg-secondary/50 text-primary bg-no-repeat bg-cover bg-center relative">
+        <Input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" style={{ position: 'absolute', opacity: 0, justifyContent: 'center' }} />
+        {!selectedImage && <ImageDown />}
+      </Button>
+      </div>
+      <Button onClick={uploadAndMint} disabled={minting}>
+        {minting ? "Minting..." : "Mint as NFT"}
+      </Button>
+      {imageUrl && (
+        <div className="mt-4">
+          <p>NFT URL:</p>
+          <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+            {imageUrl}
+          </a>
         </div>
-        <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
-          <Badge variant="outline" className="absolute right-3 top-3">Output</Badge>
-          <Card className="bg-transparent border-none shadow-none overflow-hidden mt-5 h-full">
-            <CardHeader>
-              <CardTitle>Image</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-2">
-                  {image ? (
-                    <Image src={image} alt="image" className="aspect-square w-full rounded-md object-cover h-full"/>
-                  ) : (
-                    <span className="h-[300px] w-[200px] rounded-md object-cover">Fresh image...</span>
-                  )}
-              </div>
-              <div className="mt-auto">
-                <Button
-                  onClick={handleDownload}
-                  className="text-white px-4 py-2 rounded-md"
-                >
-                  Download
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 "use server";
 
 import pinataSDK from "@pinata/sdk";
-import fs from "fs";
+import streamifier from "streamifier";
 import { revalidatePath } from "next/cache";
 
 const pinata = new pinataSDK({
@@ -18,11 +18,15 @@ export async function uploadToIPFS(formData: FormData) {
   const buffer = Buffer.from(arrayBuffer);
 
   try {
-    const result = await pinata.pinFileToIPFS(fs.createReadStream(buffer), {
-      pinataMetadata: { name: file.name },
+    const readableStream = streamifier.createReadStream(buffer);
+
+    const result = await pinata.pinFileToIPFS(readableStream, {
+      pinataMetadata: {
+        name: file.name,
+      },
     });
 
-    revalidatePath("/"); // Réactualiser la page après upload
+    // revalidatePath("/"); // Réactualiser la page après upload
     return { success: true, ipfsHash: result.IpfsHash };
   } catch (error) {
     console.error("Erreur Pinata:", error);

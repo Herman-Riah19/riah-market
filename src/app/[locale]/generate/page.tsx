@@ -13,14 +13,15 @@ import { ImageDown } from "lucide-react";
 const CONTRACT_ADDRESS = "0xa58fb98b0ba2eed705e11ebcc19cef4b6a0bdb7e";
 
 const PageGenerate = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
   // const { account } = useSDK();
 
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
     setSelectedImage(file);
   };
 

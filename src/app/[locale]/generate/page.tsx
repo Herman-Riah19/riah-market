@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { uploadToIPFS } from "@/actions/uploadPinata";
-import { ethers } from "ethers";
-import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json"
-import Image from "next/image";
-import { useSDK } from "@metamask/sdk-react";
+// import { ethers } from "ethers";
+// import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json"
+// import Image from "next/image";
+// import { useSDK } from "@metamask/sdk-react";
 import { ImageDown } from "lucide-react";
 
 const CONTRACT_ADDRESS = "0xa58fb98b0ba2eed705e11ebcc19cef4b6a0bdb7e";
@@ -16,7 +16,7 @@ const PageGenerate = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
-  const { account } = useSDK();
+  // const { account } = useSDK();
 
 
   const handleImageChange = (event) => {

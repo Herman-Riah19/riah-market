@@ -4,7 +4,7 @@ import Link from "next/link";
 import {NavbarSheet} from "./navbar-sheet";
 import {NavLangue} from "./navLangue";
 import {getLocale, getTranslations} from 'next-intl/server';
-import { ButtonConnect } from "@/components/button/buttonConnect";
+// import { ButtonConnect } from "@/components/button/buttonConnect";
 
 export const Navbar: React.FC = async () => {
   const t = await getTranslations('Navbar');
@@ -53,7 +53,7 @@ export const Navbar: React.FC = async () => {
       
       <div className="flex w-full justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <NavLangue />
-        <ButtonConnect />
+        {/* <ButtonConnect /> */}
         <DarkTheme />
       </div>
     </header>

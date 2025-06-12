@@ -1,0 +1,13 @@
+{
+    "Home": {
+        "Presentation": "decouvrir, trouver, vendre des extraordinire IA NFT"
+    },
+    "Navbar": {
+        "Home": "Accueil",
+        "Create": "Créer",
+        "About": "À propos",
+        "Blog": "Blog",
+        "ConnectWallet": "Connecter le portefeuille",
+        "Disconnected": "Déconnecté"
+    }
+}

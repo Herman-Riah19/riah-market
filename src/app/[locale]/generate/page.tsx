@@ -1,20 +1,26 @@
 "use client";
 
+// Extend the Window interface to include ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ethers } from "ethers";
+import { ethers, Contract } from "ethers";
 import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json"
 import { ImageDown } from "lucide-react";
 
-const CONTRACT_ADDRESS = "0xa58fb98b0ba2eed705e11ebcc19cef4b6a0bdb7e";
+const CONTRACT_ADDRESS = "0xYourContractAddressHere"; // Replace with your contract address
 
 const PageGenerate = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
   // const { account } = useSDK();
-
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -32,19 +38,21 @@ const PageGenerate = () => {
       const data = new FormData()
       data.set("file", selectedImage);
       const request = await fetch("/api/pinata", {
-				method: "POST",
-				body: data,
-			});
-			const pinataResponse = await request.json();
-			console.log(pinataResponse.IpfsHash);
+        method: "POST",
+        body: data,
+      });
+      const pinataResponse = await request.json();
+      console.log(pinataResponse.IpfsHash);
       setImageUrl(pinataResponse.IpfsHash as string);
 
-      // Mint NFT
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-      const tx = await contract.mintNFT(account, pinataResponse.ipfsHash);
-      await tx.wait();
+      const account = CONTRACT_ADDRESS;
+
+      // const provider = new Web3Provider(window.ethereum);
+      // const provider = new ethers.BrowserProvider(window.ethereum);
+      // const signer = await provider.getSigner();
+      // const contract = new Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
+      // const tx = await contract.mintNFT(account, pinataResponse.IpfsHash);
+      // await tx.wait();
       alert("NFT Minted Successfully!");
     } catch (error) {
       console.error("Minting error:", error);

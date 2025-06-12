@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { ethers, Contract } from "ethers";
 import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json"
 import { ImageDown } from "lucide-react";
+import { uploadToPinata } from "@/services/ServicePinata";
 
 const CONTRACT_ADDRESS = "0xYourContractAddressHere"; // Replace with your contract address
 
@@ -37,11 +38,11 @@ const PageGenerate = () => {
       // Upload to Pinata
       const data = new FormData()
       data.set("file", selectedImage);
-      const request = await fetch("/api/pinata", {
-        method: "POST",
-        body: data,
-      });
-      const pinataResponse = await request.json();
+
+      const pinataResponse = await uploadToPinata(data);
+      if( pinataResponse instanceof Error) {
+        throw pinataResponse;
+      }
       console.log(pinataResponse.IpfsHash);
       setImageUrl(pinataResponse.IpfsHash as string);
 

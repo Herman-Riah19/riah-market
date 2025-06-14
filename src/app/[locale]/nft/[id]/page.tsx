@@ -1,10 +1,6 @@
-"use client";
-
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import { products } from "@/datas/product-data";
 
 const traits = [
@@ -46,20 +42,12 @@ const traits = [
 ];
 
 interface NFTDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function NFTDetailPage({ params }: NFTDetailPageProps) {
-  const { id } = params;
-  const [nftData, setNftData] = useState<any>(null);
-
-  useEffect(() => {
-    const getProductById = () =>{
-        const selectedProduct = products.filter(prod => prod.id === id)[0]
-        setNftData(selectedProduct);
-    }
-    getProductById()
-  }, [id]);
+export default async function NFTDetailPage({ params }: NFTDetailPageProps) {
+  const { id } = await params;
+  const nftData = products.find((prod) => prod.id === id);
 
   if (!nftData) return <div>Loading...</div>;
 

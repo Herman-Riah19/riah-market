@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { products } from "@/datas/product-data";
 
 const traits = [
   {
@@ -53,14 +54,11 @@ export default function NFTDetailPage({ params }: NFTDetailPageProps) {
   const [nftData, setNftData] = useState<any>(null);
 
   useEffect(() => {
-    setNftData({
-      title: "NFT Title",
-      owner: "0xABC123...DEF",
-      mintedOn: "2024-01-01",
-      tokenId: "#1024",
-      contract: "ERC-721",
-      price: "0.5 ETH",
-    });
+    const getProductById = () =>{
+        const selectedProduct = products.filter(prod => prod.id === id)[0]
+        setNftData(selectedProduct);
+    }
+    getProductById()
   }, [id]);
 
   if (!nftData) return <div>Loading...</div>;
@@ -72,12 +70,12 @@ export default function NFTDetailPage({ params }: NFTDetailPageProps) {
           <CardTitle className="text-2xl font-bold">{nftData.title}</CardTitle>
         </CardHeader>
 
-        <CardContent className="grid md:grid-cols-4 gap-6">
+        <CardContent className="grid md:grid-cols-5 gap-6">
           {/* NFT Image */}
             <div
-            className="md:col-span-1"
+            className="md:col-span-2"
               style={{
-                backgroundImage: `url(/asset/images/image_3.jpg)`,
+                backgroundImage: `url(${nftData.image})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
               }}

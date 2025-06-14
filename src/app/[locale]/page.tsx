@@ -1,39 +1,10 @@
 import { CardCreator, CardCreatorProps } from "@/components/card/cardCreator";
 import { CardPresentation } from "@/components/card/cardPresentation";
-import { CardProduct, CardProductProps } from "@/components/card/cardProduct";
+import { CardProduct } from "@/components/card/cardProduct";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { products } from "@/datas/product-data";
 
 export default function Home() {
-  const products: CardProductProps[] = [
-    {
-      title: "Abstract Art #1",
-      creator: "Alice Doe",
-      price: 2.5,
-      image: "/asset/images/image_2.jpg",
-      profile: "/asset/profile/profile_1.png"
-    },
-    {
-      title: "Digital Wave",
-      creator: "Bob Smith",
-      price: 3.2,
-      image: "/asset/images/image_3.jpg",
-      profile: "/asset/profile/profile_2.png"
-    },
-    {
-      title: "Neon Dreams",
-      creator: "Charlie Johnson",
-      price: 4.1,
-      image: "/asset/images/image_4.jpg",
-      profile: "/asset/profile/profile_3.png"
-    },
-    {
-      title: "Futuristic Vision",
-      creator: "Diana Lee",
-      price: 5.0,
-      image: "/asset/images/image_5.jpg",
-      profile: "/asset/profile/profile_4.png"
-    }
-  ];
 
   const creators: CardCreatorProps[] = [
     {
@@ -84,7 +55,7 @@ export default function Home() {
         <div className="grid grid-cols-2 gap-4 m-4">
           <CardPresentation />
           <article className="flex flex-col items-center justify-center">
-            <CardProduct title="Triumphant Awakening" creator="Trista Francis" price={4.89} image="/asset/images/image_1.jpg" profile="/asset/profile/profile_1.png" />
+            <CardProduct id="" title="Triumphant Awakening" creator="Trista Francis" price={4.89} image="/asset/images/image_1.jpg" profile="/asset/profile/profile_1.png" />
           </article>
         </div>
       </section>
@@ -95,6 +66,7 @@ export default function Home() {
           {products.map((prod, index) => (
             <div key={index}>
               <CardProduct 
+                id={prod.id}
                 title={prod.title} 
                 creator={prod.creator} 
                 price={prod.price} 

@@ -16,14 +16,31 @@ import { ImageDown } from "lucide-react";
 import { uploadToPinata } from "@/services/ServicePinata";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const CONTRACT_ADDRESS = "0xYourContractAddressHere"; // Replace with your contract address
+
+const formSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  price: z.coerce.number().positive("Price must be a positive number"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const PageGenerate = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
-  // const { account } = useSDK();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+  });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -31,17 +48,19 @@ const PageGenerate = () => {
     setSelectedImage(file);
   };
 
-  const uploadAndMint = async () => {
+  const onSubmit = async (data: FormValues) => {
     if (!selectedImage) return alert("Please select an image.");
     // if (!account) return alert("Please connect your wallet.");
     setMinting(true);
 
     try {
       // Upload to Pinata
-      const data = new FormData();
-      data.set("file", selectedImage);
+      const fileData = new FormData();
+      fileData.set("file", selectedImage);
 
-      const pinataResponse = await uploadToPinata(data);
+      console.log("data: ", data)
+
+      const pinataResponse = await uploadToPinata(fileData);
       if (pinataResponse instanceof Error) {
         throw pinataResponse;
       }
@@ -73,7 +92,7 @@ const PageGenerate = () => {
             <CardTitle>Create New NFT</CardTitle>
           </CardHeader>
           <CardContent>
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid gap-3">
                 <Button
                   style={{
@@ -82,7 +101,7 @@ const PageGenerate = () => {
                     })`,
                     border: "dashed 2px #05043D",
                   }}
-                  className="w-[500px] h-[425px] bg-transparent hover:bg-secondary/50 text-primary bg-no-repeat bg-cover bg-center relative"
+                  className="w-[500px] h-[425px] bg-transparent hover:bg-secondary/50 text-primary bg-no-repeat bg-contain bg-center relative"
                 >
                   <Input
                     type="file"
@@ -98,9 +117,7 @@ const PageGenerate = () => {
                   {!selectedImage && <ImageDown />}
                 </Button>
               </div>
-              <Button onClick={uploadAndMint} disabled={minting}>
-                {minting ? "Minting..." : "Mint as NFT"}
-              </Button>
+
               {imageUrl && (
                 <div className="mt-4">
                   <p>NFT URL:</p>
@@ -114,12 +131,14 @@ const PageGenerate = () => {
                   </a>
                 </div>
               )}
-              <Input type="text" placeholder="NFT Title" />
-              <Textarea placeholder="Description" />
-              <Input type="file" />
-              <Input type="number" placeholder="Price (ETH)" />
-              <Button type="submit" className="w-full">
-                Create NFT
+              <Input type="text" placeholder="NFT Title" {...register("title")} />
+              {errors.title && (
+                  <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                )}
+              <Textarea placeholder="Description" {...register("description")} />
+              <Input type="number" placeholder="Price (ETH)" {...register("price")} />
+              <Button type="submit" disabled={minting} className="w-full">
+                {minting ? "Minting..." : "Create and Mint NFT"}
               </Button>
             </form>
           </CardContent>

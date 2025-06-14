@@ -17,7 +17,7 @@ export const Navbar: React.FC = async () => {
     },
     {
       name: t('Create'),
-      link: `/${locale}/generate`,
+      link: `/${locale}/create`,
     },
     {
       name: t("About"),

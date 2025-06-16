@@ -1,5 +1,4 @@
 import React from "react";
-import {DarkTheme} from "@/components/dark-theme";
 import Link from "next/link";
 import {NavbarSheet} from "./navbar-sheet";
 import {NavLangue} from "./navLangue";
@@ -22,10 +21,6 @@ export const Navbar: React.FC = async () => {
     {
       name: t("About"),
       link: `/${locale}/about`,
-    },
-    {
-      name: t("Blog"),
-      link: `/${locale}/blog`,
     },
   ];
 
@@ -53,8 +48,6 @@ export const Navbar: React.FC = async () => {
       
       <div className="flex w-full justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <NavLangue />
-        {/* <ButtonConnect /> */}
-        <DarkTheme />
       </div>
     </header>
   );

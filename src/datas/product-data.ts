@@ -1,10 +1,10 @@
 export interface Product {
-  id: string;
+  id?: string;
   title: string;
-  creator: string;
+  creator?: string;
   price: number;
   image: string;
-  profile: string;
+  profile?: string;
 
   // Champs supplémentaires
   description?: string;
@@ -13,7 +13,6 @@ export interface Product {
   owner?: string;
   mintedOn?: string;
 }
-
 
 export const products: Product[] = [
   {
@@ -60,7 +59,7 @@ export const products: Product[] = [
     creator: "Diana Lee",
     price: 5.0,
     image: "/asset/images/image_5.jpg",
-    profile: "/asset/profile/profile_4.png",
+    profile: "/asset/profile/profile_4.jpg",
     tokenId: "3333",
     contract: "0x123...789",
     owner: "0x123...456",

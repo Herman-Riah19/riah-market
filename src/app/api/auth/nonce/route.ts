@@ -1,9 +1,7 @@
 // app/api/auth/nonce/route.ts
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
-
-// In-memory nonce store
-const nonces = new Map<string, string>();
+import { nonces } from "@/lib/hash";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,5 +16,3 @@ export async function GET(request: Request) {
 
   return NextResponse.json({ nonce });
 }
-
-export { nonces };

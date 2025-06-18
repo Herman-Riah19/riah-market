@@ -1,7 +1,7 @@
 import { NextAuthOptions, getServerSession, DefaultSession } from "next-auth";
 import { ethers } from "ethers";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { nonces } from "@/app/api/auth/nonce/route";
+import { nonces } from "@/lib/hash";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

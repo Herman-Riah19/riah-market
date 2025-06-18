@@ -50,7 +50,7 @@ export const ButtonConnectWallet = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 mt-4">
+    <div className="flex flex-col gap-3 mt-2">
       <Button variant="outline" onClick={login} disabled={loading}>
         <MetaMaskIcon />
         {loading ? "Loading..." : "Connect with MetaMask"}

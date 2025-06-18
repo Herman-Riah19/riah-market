@@ -99,7 +99,7 @@ export const Navbar: React.FC = async () => {
           </DropdownMenu>
         ) : (
           <div className="flex">
-            <Link href={ `/${locale}/auth/login`} className="ml-1">
+            <Link href={ `/${locale}/sign-in`} className="ml-1 mt-2 mr-2">
               <Button variant="default" className="sm:text-[10px] md:text-[15px]">{t('SignIn')}</Button>
             </Link>
             <ButtonConnectWallet />

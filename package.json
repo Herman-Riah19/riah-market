@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "hardhat compile && next build",
+    "build": "hardhat compile && prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
     "compile": "hardhat compile",

@@ -4,6 +4,7 @@
     },
     "Navbar": {
         "Home": "Home",
+        "Explore": "Explore",
         "Create": "Create",
         "About": "About",
         "Blog": "Blog",

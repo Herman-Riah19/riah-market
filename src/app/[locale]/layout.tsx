@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Navbar } from "@/components/navbar/navbar";
-import Footer from "@/components/footer";
 import "@/styles/globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from 'next-intl/server';
@@ -52,9 +50,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            <Navbar />
             {children}
-            <Footer />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

@@ -1,6 +1,6 @@
 "use client";
 import { CardProduct } from "@/components/card/cardProduct";
-import { products } from "@/datas/product-data";
+import { productsHome as products } from "@/datas/product-data";
 import * as React from "react";
 
 export function ListProductContent() {
@@ -13,10 +13,10 @@ export function ListProductContent() {
             <CardProduct
               id={prod.id}
               title={prod.title}
-              creator={prod.creator}
               price={prod.price}
               image={prod.image}
-              profile={prod.profile}
+              mintedOn={prod.mintedOn}
+              tokenId={prod.tokenId}
             />
           </div>
         ))}

@@ -3,11 +3,25 @@ import Link from "next/link";
 import {NavbarSheet} from "./navbar-sheet";
 import {NavLangue} from "./navLangue";
 import {getLocale, getTranslations} from 'next-intl/server';
-// import { ButtonConnect } from "@/components/button/buttonConnect";
+import { getServerSession } from "next-auth";
+import { ButtonConnectWallet } from "@/components/button/buttonConnect";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar } from "@/components/ui/avatar";
+import Image from "next/image";
+import { User2 } from "lucide-react";
+import { ButtonLogout } from "@/components/button/buttonLogout";
 
 export const Navbar: React.FC = async () => {
   const t = await getTranslations('Navbar');
   const locale = await getLocale();
+  const session = await getServerSession();
 
   const pages = [
     {
@@ -52,6 +66,45 @@ export const Navbar: React.FC = async () => {
       
       <div className="flex w-full justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <NavLangue />
+      </div>
+      
+      <div>
+        {session?.user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar className="p-2">
+                {session?.user?.image ? (
+                  <Image
+                    src={session?.user?.image}
+                    alt={session?.user?.name ?? ""}
+                    width={50}
+                    height={50}
+                  />
+                ) : (
+                  <User2 />
+                )}
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={ `/${locale}/midas/profile`}>
+                <DropdownMenuItem>{t('Profile')}</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator color="primary" />
+              <Link href={ `/${locale}/midas/profile/setting`}>
+                <DropdownMenuItem>{t('Setting')}</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator color="primary"/>
+              <ButtonLogout />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className="flex">
+            <Link href={ `/${locale}/auth/login`} className="ml-1">
+              <Button variant="default" className="sm:text-[10px] md:text-[15px]">{t('SignIn')}</Button>
+            </Link>
+            <ButtonConnectWallet />
+          </div>
+        )}
       </div>
     </header>
   );

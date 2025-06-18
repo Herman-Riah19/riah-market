@@ -9,6 +9,8 @@
         "About": "About",
         "Blog": "Blog",
         "ConnectWallet": "Connect Wallet",
-        "Disconnected": "Disconnected"
+        "Disconnected": "Disconnected",
+        "SignIn": "Sign In",
+        "SignUp": "Sign Out"
     }
 }

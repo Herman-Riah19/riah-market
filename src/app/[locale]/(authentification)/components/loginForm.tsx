@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { useForm, ControllerRenderProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -11,17 +11,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
+import { Form } from "@/components/ui/form";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
+import { ButtonConnectWallet } from "@/components/button/buttonConnect";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -29,6 +23,8 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,8 +33,26 @@ export function LoginForm() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setLoading(true);
+      const response = await signIn("wallet", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      if (response?.error) {
+        console.log("Sign-in failed:", response.error);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Login error", error);
+      setLoading(false);
+    }
   };
   return (
     <Card className="w-full border-none bg-background">
@@ -46,16 +60,7 @@ export function LoginForm() {
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
 
-        {/* Social login buttons */}
-        <div className="flex flex-col gap-3 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => console.log("MetaMask login")}
-          > 
-            <MetaMaskIcon />
-            Continue with MetaMask
-          </Button>
-        </div>
+        <ButtonConnectWallet />
 
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
@@ -76,13 +81,15 @@ export function LoginForm() {
               label="Email"
               type="email"
               placeholder="Enter your email"
-              {...form.register("email")} />
+              {...form.register("email")}
+            />
 
-              <LabelledTextField
-                label="Password"
-                type="password"
-                placeholder="Enter your password"
-                {...form.register("password")} />
+            <LabelledTextField
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              {...form.register("password")}
+            />
 
             <Button type="submit" className="w-full">
               Sign In
@@ -93,7 +100,3 @@ export function LoginForm() {
     </Card>
   );
 }
-
-
-
-

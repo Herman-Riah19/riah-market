@@ -1,14 +1,16 @@
 {
-    "Home": {
-        "Presentation": "decouvrir, trouver, vendre des extraordinire IA NFT"
-    },
-    "Navbar": {
-        "Home": "Accueil",
-        "Explore": "Explorer",
-        "Create": "Créer",
-        "About": "À propos",
-        "Blog": "Blog",
-        "ConnectWallet": "Connecter le portefeuille",
-        "Disconnected": "Déconnecté"
-    }
+  "Home": {
+    "Presentation": "decouvrir, trouver, vendre des extraordinire IA NFT"
+  },
+  "Navbar": {
+    "Home": "Accueil",
+    "Explore": "Explorer",
+    "Create": "Créer",
+    "About": "À propos",
+    "Blog": "Blog",
+    "ConnectWallet": "Connecter le portefeuille",
+    "Disconnected": "Déconnecté",
+    "SignIn": "Se connecter",
+    "SignUp": "S'inscrire"
+  }
 }

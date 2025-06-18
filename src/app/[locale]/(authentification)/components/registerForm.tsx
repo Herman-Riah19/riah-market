@@ -12,13 +12,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
-import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
+import { userRegister } from "../services/signoutAction";
+import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 
 const formSchema = z.object({
   username: z.string().min(2, "Username must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  address: z.string().min(1, "Address must be at least 10 characters"),
 });
 
 export function RegisterForm() {
@@ -28,28 +30,30 @@ export function RegisterForm() {
       username: "",
       email: "",
       password: "",
+      address: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await userRegister({
+        name: values.username,
+        email: values.email,
+        password: values.password,
+        address: values.address
+      });
+    } catch (error) {
+      console.error('Registration error:', error);
+    }
   };
+  
   return (
     <Card className="w-full border-none bg-background">
       <CardHeader>
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
 
-        {/* Social login buttons */}
-        <div className="flex flex-col gap-3 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => console.log("MetaMask login")}
-          >
-            <MetaMaskIcon />
-            Continue with MetaMask
-          </Button>
-        </div>
+        <ButtonConnectWallet />
 
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
@@ -71,10 +75,17 @@ export function RegisterForm() {
               placeholder="Enter your username"
               {...form.register("username")}
             />
+
             <LabelledTextField
               label="Email"
               placeholder="Enter your email"
               {...form.register("email")}
+            />
+
+            <LabelledTextField
+              label="Address"
+              placeholder="Enter your wallet address"
+              {...form.register("address")}
             />
 
             <LabelledTextField

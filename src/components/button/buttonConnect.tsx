@@ -1,71 +1,60 @@
-// "use client";
-// import React from "react";
-// import { useSDK, MetaMaskProvider } from "@metamask/sdk-react";
-// import { Button } from "@/components/ui/button";
-// import { Wallet } from "lucide-react";
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from "@/components/ui/popover";
-// import { useTranslations } from "next-intl";
+"use client";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
+import { ethers } from "ethers";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-// const ConnectWalletButton = () => {
-//     const { sdk, connected, connecting, account } = useSDK();
-//     const t = useTranslations("Navbar")
-//     const connect = async () => {
-//         try {
-//         await sdk?.connect();
-//         } catch (error) {
-//         console.log(error);
-//         }
-//     };
+export const ButtonConnectWallet = () => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-//     const disconnect = () => {
-//         if (sdk) {
-//             sdk.terminate();
-//         }
-//     };
+  const login = async () => {
+    try {
+      setLoading(true);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
 
-//     return (
-//         <div className="relative">
-//         {connected ? (
-//             <Popover>
-//             <PopoverTrigger>
-//                 <Button>{account}</Button>
-//             </PopoverTrigger>
-//             <PopoverContent onClick={disconnect}>{t("Disconnected")}</PopoverContent>
-//             </Popover>
-//         ) : (
-//             <Button
-//             variant="secondary"
-//             disabled={connecting}
-//             onClick={connect}
-//             className="flex flex-row gap-2"
-//             >
-//                 <Wallet /> {t("ConnectWallet")}
-//             </Button>
-//         )}
-//         </div>
-//     );
-// };
+      console.log("Connected address:", address);
 
-// export const ButtonConnect = () => {
-//   const host =
-//     typeof window !== "undefined" ? window.location.host : "defaultHost";
+      const res = await fetch(`/api/auth/nonce?address=${address}`);
+      const { nonce } = await res.json();
 
-//   const sdkOption = {
-//     logging: { developerMode: false },
-//     checkInstallationImmediately: false,
-//     dappMetadata: {
-//       name: "Riah-Marketplace",
-//       url: host,
-//     },
-//   };
+      console.log(nonce);
 
-//   return (
-//     <MetaMaskProvider debug={false} sdkOptions={sdkOption}>
-//       <ConnectWalletButton />
-//     </MetaMaskProvider>
-//   );
-// };
+      const message = `Login with nonce: ${nonce}`;
+      const signature = await signer.signMessage(message);
+
+      console.log("Signature:", signature);
+
+      const response = await signIn("wallet", {
+        address,
+        signature,
+        redirect: false,
+      });
+      console.log("Response from signIn:", response);
+      if (!response) {
+        console.log("Sign-in failed");
+        setLoading(false);
+      }
+
+      setLoading(false);
+      router.push("/");
+    } catch (error) {
+      console.error("Login error", error);
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-3 mt-4">
+      <Button variant="outline" onClick={login} disabled={loading}>
+        <MetaMaskIcon />
+        {loading ? "Loading..." : "Connect with MetaMask"}
+      </Button>
+    </div>
+  );
+};

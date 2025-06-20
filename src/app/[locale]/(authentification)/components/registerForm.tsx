@@ -15,6 +15,9 @@ import { Form } from "@/components/ui/form";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { userRegister } from "../services/signoutAction";
 import { ButtonConnectWallet } from "@/components/button/buttonConnect";
+import Link from "next/link";
+import { useLocale } from "next-intl";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2, "Username must be at least 2 characters"),
@@ -24,6 +27,8 @@ const formSchema = z.object({
 });
 
 export function RegisterForm() {
+  const local = useLocale();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,13 +41,16 @@ export function RegisterForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      setLoading(true);
       await userRegister({
         name: values.username,
         email: values.email,
         password: values.password,
         address: values.address
       });
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Registration error:', error);
     }
   };
@@ -96,10 +104,16 @@ export function RegisterForm() {
             />
 
             <Button type="submit" className="w-full">
-              Sign In
+              {loading ? "Loading..." : "Sign Up"}
             </Button>
           </form>
         </Form>
+        <div className="mt-4 text-center text-sm">
+          You have an account?{" "}
+          <Link href={`/${local}/sign-in`} className="underline underline-offset-4">
+            Sign in
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

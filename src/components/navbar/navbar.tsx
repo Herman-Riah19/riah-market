@@ -4,7 +4,6 @@ import {NavbarSheet} from "./navbar-sheet";
 import {NavLangue} from "./navLangue";
 import {getLocale, getTranslations} from 'next-intl/server';
 import { getServerSession } from "next-auth";
-import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -102,7 +101,6 @@ export const Navbar: React.FC = async () => {
             <Link href={ `/${locale}/sign-in`} className="ml-1 mt-2 mr-2">
               <Button variant="default" className="sm:text-[10px] md:text-[15px]">{t('SignIn')}</Button>
             </Link>
-            <ButtonConnectWallet />
           </div>
         )}
       </div>

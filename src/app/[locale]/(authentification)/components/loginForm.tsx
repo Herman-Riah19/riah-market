@@ -16,6 +16,8 @@ import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useLocale } from "next-intl";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -24,6 +26,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const router = useRouter();
+  const local = useLocale();
   const [loading, setLoading] = React.useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,10 +95,16 @@ export function LoginForm() {
             />
 
             <Button type="submit" className="w-full">
-              Sign In
+              {loading ? "Loading..." : "Sign In"}
             </Button>
           </form>
         </Form>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link href={`/${local}/sign-up`} className="underline underline-offset-4">
+            Sign up
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

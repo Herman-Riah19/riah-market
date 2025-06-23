@@ -12,5 +12,31 @@
     "Disconnected": "Déconnecté",
     "SignIn": "Se connecter",
     "SignUp": "S'inscrire"
+  },
+  "Generator": {
+    "Settings": "Paramètre",
+    "Output": "Sortie",
+    "Prompt": "Prompt de l'image",
+    "Seed": "Graine",
+    "PromptPlaceholder": "Entrer votre prompt",
+    "RatioPlaceholder": "électionnez un ratio",
+    "MaskPlaceholder": "Entrer le masque",
+    "Mask": "L'image transmise à ce paramètre doit être une image en noir et blanc qui représente, à n'importe quel pixel, la force de l'inpainting en fonction de l'obscurité ou de la luminosité du pixel donné. Les pixels complètement noirs ne représentent aucune force d’inpainting tandis que les pixels complètement blancs représentent une force maximale.",
+    "Right": "Droite",
+    "Left": "Gauche",
+    "Up": "En Haut",
+    "Down": "En bas",
+    "Creativity": "Creativité",
+    "Strength": "vigueur",
+    "ObjectChange": "Objet à modifier",
+    "Generate": "Générer l'image",
+    "Response": "Image généré",
+    "FreshImage": "Chargement de l'image",
+    "Download": "Sauvegarder",
+    "SelectFile": "Veuillez sélectionner un fichier.",
+    "ToastSuccess": "Les images ont été générées",
+    "ToastSuccessID": "Les identifiants d'image ont été générés",
+    "ToastError": "Il y a l'erreur de génération",
+    "Wait10Seconde": "La génération est toujours en cours, réessayez dans 10 secondes."
   }
 }

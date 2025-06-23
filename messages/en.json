@@ -12,5 +12,31 @@
         "Disconnected": "Disconnected",
         "SignIn": "Sign In",
         "SignUp": "Sign Out"
-    }
+    },
+    "Generator": {
+    "Settings": "Settings",
+    "Output": "Output",
+    "Prompt": "Prompt of the image",
+    "Seed": "Seed",
+    "PromptPlaceholder": "Your imagination's prompt",
+    "RatioPlaceholder": "Select a ratio",
+    "MaskPlaceholder": "Enter the mask",
+    "Mask": "The image passed to this parameter should be a black and white image that represents, at any pixel, the strength of inpainting based on how dark or light the given pixel is. Completely black pixels represent no inpainting strength while completely white pixels represent maximum strength.",
+    "Right": "Right",
+    "Left": "Left",
+    "Up": "Up",
+    "Down": "Down",
+    "Creativity": "Creativity",
+    "Strength": "Strength",
+    "ObjectChange": "Object to change",
+    "Generate": "Generate the image",
+    "Response": "Generating Image",
+    "FreshImage": "Fresh image...",
+    "Download": "Download",
+    "SelectFile": "Please select a file.",
+    "ToastSuccess": "Image are been Generated",
+    "ToastSuccessID": "Image ID are been Generated",
+    "ToastError": "There are the error of generation",
+    "Wait10Seconde": "Generation is still running, try again in 10 seconds."
+  }
 }

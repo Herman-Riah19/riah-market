@@ -21,7 +21,7 @@ export function LabelledTextField({
     ...registerProps
 }: ILabelledTextFieldProps) {
     return (
-        <FormItem>
+        <FormItem className="grid gap-3">
             <FormLabel>{label}</FormLabel>
             <FormControl>
                 <Input placeholder={placeholder} type={type} {...registerProps} />

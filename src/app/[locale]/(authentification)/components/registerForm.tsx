@@ -18,19 +18,13 @@ import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useState } from "react";
-
-const formSchema = z.object({
-  username: z.string().min(2, "Username must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  address: z.string().min(1, "Address must be at least 10 characters"),
-});
+import { SignupSchema } from "@/validators/user-validator";
 
 export function RegisterForm() {
   const local = useLocale();
   const [loading, setLoading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SignupSchema>>({
+    resolver: zodResolver(SignupSchema),
     defaultValues: {
       username: "",
       email: "",
@@ -39,7 +33,7 @@ export function RegisterForm() {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof SignupSchema>) => {
     try {
       setLoading(true);
       await userRegister({

@@ -1,20 +1,20 @@
 import { NextAuthOptions, getServerSession, DefaultSession } from "next-auth";
 import { ethers } from "ethers";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { nonces } from "@/lib/hash";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user?: {
       id?: string;
       address?: string;
-    } & DefaultSession["user"]
+    } & DefaultSession["user"];
   }
 }
 import { prisma } from "@/utils/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from "jsonwebtoken";
 import { verifyPassword } from "@/lib/hash";
+import { randomUUID } from "crypto";
 
 const secretKey = process.env.NEXTAUTH_SECRET || "defaultSecretKey";
 
@@ -80,25 +80,30 @@ export const authConfig: NextAuthOptions = {
       },
       async authorize(credentials) {
         const { address, signature } = credentials ?? {};
-        const nonce = nonces.get(address?.toLowerCase() ?? "");
+        if (!signature || !address) return null;
+        const record = await prisma.nonce.findUnique({
+          where: { address: address.toLowerCase() },
+        });
 
-        if (!nonce || !signature || !address) return null;
+        if(!record) return null;
 
+        const nonce = record.nonce;
         const message = `Login with nonce: ${nonce}`;
         const signerAddr = ethers.verifyMessage(message, signature);
 
         if (signerAddr.toLowerCase() !== address.toLowerCase()) return null;
 
-        // Clear the nonce
-        nonces.delete(address.toLowerCase());
+        await prisma.nonce.delete({
+          where: { address: address.toLowerCase() },
+        });
 
         let user = await prisma.user.findUnique({ where: { address } });
         if (!user) {
-          user = await prisma.user.create({ data: { address } });
+          user = await prisma.user.create({ data: { address, name: "User"+ randomUUID() } });
         }
 
         console.log("user :", user);
-        return { id: user.id, address: user.address };
+        return user;
       },
     }),
   ],
@@ -108,19 +113,19 @@ export const authConfig: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, user }) {
-    if (user) {
-      token.id = user.id;
-      token.address = (user as any).address;
-    }
-    return token;
-  },
-  async session({ session, token }) {
-    if (session.user && token.address) {
-      session.user.address = token.address as string;
-      session.user.id = token.id as string;
-    }
-    return session;
-  },
+      if (user) {
+        token.id = user.id;
+        token.address = (user as any).address;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user && token.address) {
+        session.user.address = token.address as string;
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
 };
 

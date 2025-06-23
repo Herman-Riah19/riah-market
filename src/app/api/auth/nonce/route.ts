@@ -1,7 +1,7 @@
 // app/api/auth/nonce/route.ts
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
-import { nonces } from "@/lib/hash";
+import { prisma } from "@/utils/prisma";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,7 +12,11 @@ export async function GET(request: Request) {
   }
 
   const nonce = randomBytes(16).toString("hex");
-  nonces.set(address.toLowerCase(), nonce);
+  await prisma.nonce.upsert({
+    where: { address: address.toLowerCase() },
+    update: { nonce },
+    create: { address: address.toLowerCase(), nonce },
+  });
 
   return NextResponse.json({ nonce });
 }

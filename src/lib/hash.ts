@@ -1,7 +1,5 @@
 import crypto from "crypto";
 
-export const nonces = new Map<string, string>();
-
 export type Hashing = {
   salt: string;
   hash: string;

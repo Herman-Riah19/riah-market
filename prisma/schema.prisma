@@ -64,3 +64,11 @@ model VerificationRequest {
 
   @@unique([identifier, token])
 }
+
+model Nonce {
+  id        String   @id @default(cuid())
+  address   String   @unique
+  nonce     String
+  createdAt DateTime @default(now())
+}
+

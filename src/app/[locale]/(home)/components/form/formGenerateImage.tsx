@@ -14,6 +14,7 @@ import { z } from "zod";
 import { CardImageGenerated } from "../card/cardImageGenerated";
 import { useTranslations } from "next-intl";
 import { generateImageByIA } from "@/services/ServiceStableDiffusion";
+import { randomUUID } from "crypto";
 
 const ratiosImages = [
   {
@@ -86,7 +87,9 @@ export function FormGenerateImage({
       if (response && response.imageUrl) {
         const imageUrl = response.imageUrl;
 
-        const file = await dataUrlToFile(imageUrl, "generated-image.png");
+        const generateFileName = randomUUID.toString() + ".png";
+
+        const file = await dataUrlToFile(imageUrl, generateFileName);
 
         setImage(file);
         setGeneratedImage(imageUrl);

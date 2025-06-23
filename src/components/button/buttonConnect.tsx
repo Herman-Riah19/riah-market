@@ -5,6 +5,7 @@ import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
 import { ethers } from "ethers";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { s } from "node_modules/framer-motion/dist/types.d-6pKw1mTI";
 
 export const ButtonConnectWallet = () => {
   const [loading, setLoading] = useState(false);
@@ -34,15 +35,17 @@ export const ButtonConnectWallet = () => {
         address,
         signature,
         redirect: false,
+        callbackUrl: "/",
       });
       console.log("Response from signIn:", response);
-      if (!response) {
-        console.log("Sign-in failed");
+      if (response?.ok && response.url) {
+        router.push(response.url);
+      } else {
+        console.error("Sign-in failed", response?.error);
         setLoading(false);
       }
 
       setLoading(false);
-      router.push("/");
     } catch (error) {
       console.error("Login error", error);
       setLoading(false);

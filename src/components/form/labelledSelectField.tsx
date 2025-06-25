@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ImageIcon } from 'lucide-react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 export interface ILabelledSelectFieldProps extends UseFormRegisterReturn {
-  label: string;
-  placeholder?: string;
-  options: Array<{ value: string; label: string }>;
+    label: string;
+    placeholder?: string;
+    options: Array<{ value: string; label: string }>;
 }
 
 export function LabelledSelectFieldWithIcon ({
-    label,
-    placeholder,
-    options,
-    ...registerProps
+        label,
+        placeholder,
+        options,
+        ...registerProps
 }: ILabelledSelectFieldProps) {
-  return (
-    <FormItem className='grid gap-3'>
-        <FormLabel>{label}</FormLabel>
-        <FormControl>
+    return (
+        <div className='grid gap-3'>
+            <Label>{label}</Label>
             <Select {...registerProps}>
                 <SelectTrigger className="items-start [&_[data-description]]:hidden">
                     <SelectValue placeholder={placeholder || 'Select an option'} />
@@ -38,8 +37,6 @@ export function LabelledSelectFieldWithIcon ({
                     ))}
                 </SelectContent>
             </Select>
-        </FormControl>
-        <FormMessage />
-    </FormItem>
-  );
+        </div>
+    );
 }

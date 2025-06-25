@@ -5,7 +5,13 @@ import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
 import { ethers } from "ethers";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { s } from "node_modules/framer-motion/dist/types.d-6pKw1mTI";
+
+// Extend the Window interface to include ethereum
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 
 export const ButtonConnectWallet = () => {
   const [loading, setLoading] = useState(false);

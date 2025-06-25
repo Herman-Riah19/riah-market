@@ -11,16 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LabelledTextField } from "@/components/form/labelledTextFiled";
+import { createProductSchema } from "@/validators/product-schema";
+import { saveProduct } from "@/app/[locale]/(home)/services/ServiceProduct";
 
-const CONTRACT_ADDRESS = "0xYourContractAddressHere";
-
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-  price: z.coerce.number().positive("Price must be a positive number"),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof createProductSchema>;
 
 export interface IFormCreateNftProps {
   selectedImage?: File | null;
@@ -34,11 +29,12 @@ export function FormCreateNft({
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createProductSchema),
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +47,6 @@ export function FormCreateNft({
 
   const onSubmit = async (data: FormValues) => {
     if (!selectedImage) return alert("Please select an image.");
-    // if (!account) return alert("Please connect your wallet.");
     setMinting(true);
 
     try {
@@ -68,7 +63,34 @@ export function FormCreateNft({
       console.log(pinataResponse.IpfsHash);
       setImageUrl(pinataResponse.IpfsHash as string);
 
-      const account = CONTRACT_ADDRESS;
+      // const account = CONTRACT_ADDRESS;
+
+      const response = await saveProduct({
+        title: data.title,
+        image: pinataResponse.IpfsHash as string,
+        price: parseFloat(data.price.toString()),
+        description: data.description ?? undefined,
+        owner: data.owner,
+      })
+
+      if(response.success === false) {
+        throw new Error(
+          typeof response.error === "string"
+            ? response.error
+            : response.error instanceof Error
+            ? response.error.message
+            : JSON.stringify(response.error)
+        );
+      }
+      console.log("Product saved successfully:", response.product);
+
+      setValue("title", "");
+      setValue("description", "");
+      setValue("owner", "");
+      setValue("price", 0);
+      if (setSelectedImage) setSelectedImage(null);
+      setImageUrl("");
+
 
       // const provider = new Web3Provider(window.ethereum);
       // const provider = new ethers.BrowserProvider(window.ethereum);
@@ -129,18 +151,17 @@ export function FormCreateNft({
                 </a>
               </div>
             )}
-            <Input type="text" placeholder="NFT Title" {...register("title")} />
-            {errors.title && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.title.message}
-              </p>
-            )}
+            <LabelledTextField type="text" label="Title" placeholder="NFT Title"  {...register("title")} />
             <Textarea placeholder="Description" {...register("description")} />
-            <Input
+            <LabelledTextField label="Votre address" placeholder="Votre adress wallet" {...register("owner")} />
+            <span className="text-red-500 text-sm">{errors.owner?.message}</span>
+            <LabelledTextField
+              label="Price"
               type="number"
               placeholder="Price (ETH)"
               {...register("price")}
             />
+            <span className="text-red-500 text-sm">{errors.price?.message}</span>
             <Button type="submit" disabled={minting} className="w-full">
               {minting ? "Minting..." : "Create and Mint NFT"}
             </Button>

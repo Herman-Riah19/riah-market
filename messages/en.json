@@ -1,19 +1,21 @@
 {
-    "Home": {
-        "Presentation": "Discover, Find, Sell extraordinary IA NFT"
-    },
-    "Navbar": {
-        "Home": "Home",
-        "Explore": "Explore",
-        "Create": "Create",
-        "About": "About",
-        "Blog": "Blog",
-        "ConnectWallet": "Connect Wallet",
-        "Disconnected": "Disconnected",
-        "SignIn": "Sign In",
-        "SignUp": "Sign Out"
-    },
-    "Generator": {
+  "Home": {
+    "Presentation": "Discover, Find, Sell extraordinary IA NFT"
+  },
+  "Navbar": {
+    "Home": "Home",
+    "Explore": "Explore",
+    "Create": "Create",
+    "About": "About",
+    "Blog": "Blog",
+    "ConnectWallet": "Connect Wallet",
+    "Disconnected": "Disconnected",
+    "SignIn": "Sign In",
+    "SignUp": "Sign Out",
+    "Profile": "Profile",
+    "Setting": "Setting"
+  },
+  "Generator": {
     "Settings": "Settings",
     "Output": "Output",
     "Prompt": "Prompt of the image",

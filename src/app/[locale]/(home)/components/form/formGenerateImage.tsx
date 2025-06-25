@@ -14,7 +14,6 @@ import { z } from "zod";
 import { CardImageGenerated } from "../card/cardImageGenerated";
 import { useTranslations } from "next-intl";
 import { generateImageByIA } from "@/services/ServiceStableDiffusion";
-import { randomUUID } from "crypto";
 
 const ratiosImages = [
   {
@@ -57,13 +56,9 @@ const ratiosImages = [
 
 export interface IFormGenerateImageProps {
   setImage: (image: File | null) => void;
-  setState?: (state: number) => void;
 }
 
-export function FormGenerateImage({
-  setImage,
-  setState,
-}: IFormGenerateImageProps) {
+export function FormGenerateImage({ setImage }: IFormGenerateImageProps) {
   const t = useTranslations("Generator");
   const [loading, setLoading] = useState(false);
   const [generatedImage, setGeneratedImage] = useState("");
@@ -87,14 +82,13 @@ export function FormGenerateImage({
       if (response && response.imageUrl) {
         const imageUrl = response.imageUrl;
 
-        const generateFileName = randomUUID.toString() + ".png";
+        const generateFileName = "Generated_image.png";
 
         const file = await dataUrlToFile(imageUrl, generateFileName);
 
         setImage(file);
         setGeneratedImage(imageUrl);
         setLoading(false);
-        setState?.(2);
       }
     } catch (error) {
       console.error("Error generating image:", error);
@@ -117,40 +111,38 @@ export function FormGenerateImage({
         <CardTitle>{t("Generate")}</CardTitle>
       </CardHeader>
       <CardContent className="grid md:grid-cols-2 gap-4 w-full">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid w-full items-start gap-6"
-          >
-            <fieldset className="grid gap-4 rounded-lg border p-4">
-              <legend className="-ml-1 px-1 text-sm font-medium">
-                {t("Settings")}
-              </legend>
-              <LabelledTextField
-                label={t("Prompt")}
-                type="text"
-                placeholder={t("PromptPlaceholder")}
-                {...form.register("prompt")}
-              />
-              <LabelledSelectFieldWithIcon
-                label="Ratio"
-                placeholder={t("RatioPlaceholder")}
-                options={ratiosImages.map(({ name, ratio }) => ({
-                  value: ratio,
-                  label: name,
-                }))}
-                {...form.register("ratio")}
-              />
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  t("Generate")
-                )}
-              </Button>
-            </fieldset>
-          </form>
-        </Form>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid w-full items-start gap-6"
+        >
+          <fieldset className="grid gap-4 rounded-lg border p-4">
+            <legend className="-ml-1 px-1 text-sm font-medium">
+              {t("Settings")}
+            </legend>
+            <LabelledTextField
+              label={t("Prompt")}
+              type="text"
+              placeholder={t("PromptPlaceholder")}
+              {...form.register("prompt")}
+            />
+            <LabelledSelectFieldWithIcon
+              label="Ratio"
+              placeholder={t("RatioPlaceholder")}
+              options={ratiosImages.map(({ name, ratio }) => ({
+                value: ratio,
+                label: name,
+              }))}
+              {...form.register("ratio")}
+            />
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? (
+                <LoaderCircle className="animate-spin" />
+              ) : (
+                t("Generate")
+              )}
+            </Button>
+          </fieldset>
+        </form>
         <CardImageGenerated image={generatedImage} />
       </CardContent>
     </Card>

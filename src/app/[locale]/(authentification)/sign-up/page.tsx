@@ -1,10 +1,10 @@
-"use server"
-import { GalleryVerticalEnd } from "lucide-react"
-import { getLocale } from "next-intl/server"
+"use client"
+import { GalleryVerticalEnd } from "lucide-react";
 import { RegisterForm } from "../components/registerForm";
+import { useLocale } from "next-intl";
 
-export default async function SignOutPage() {
-  const local = await getLocale();
+export default function SignOutPage() {
+  const local = useLocale()
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">

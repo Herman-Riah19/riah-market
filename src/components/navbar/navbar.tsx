@@ -67,6 +67,7 @@ export const Navbar: React.FC = async () => {
         <NavLangue />
       </div>
       
+        <span>{session?.user?.address}</span>
       <div>
         {session?.user ? (
           <DropdownMenu>
@@ -85,11 +86,11 @@ export const Navbar: React.FC = async () => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link href={ `/${locale}/midas/profile`}>
+              <Link href={ `/${locale}/profile`}>
                 <DropdownMenuItem>{t('Profile')}</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator color="primary" />
-              <Link href={ `/${locale}/midas/profile/setting`}>
+              <Link href={ `/${locale}/profile/setting`}>
                 <DropdownMenuItem>{t('Setting')}</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator color="primary"/>

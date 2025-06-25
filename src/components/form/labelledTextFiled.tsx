@@ -1,32 +1,30 @@
+"use client";
+
 import * as React from "react";
-import {
-    FormControl,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { UseFormRegisterReturn } from "react-hook-form";
 import { Input } from "@/components/ui/input";
+import { UseFormRegisterReturn } from "react-hook-form";
+import { Label } from "@/components/ui/label";
 
 export interface ILabelledTextFieldProps extends UseFormRegisterReturn {
-    label: string;
-    placeholder?: string;
-    type?: string;
+  label: string;
+  placeholder?: string;
+  type?: string;
 }
 
 export function LabelledTextField({
-    label,
-    placeholder,
-    type = "text",
-    ...registerProps
+  label,
+  placeholder,
+  type = "text",
+  ...registerProps
 }: ILabelledTextFieldProps) {
-    return (
-        <FormItem className="grid gap-3">
-            <FormLabel>{label}</FormLabel>
-            <FormControl>
-                <Input placeholder={placeholder} type={type} {...registerProps} />
-            </FormControl>
-            <FormMessage />
-        </FormItem>
-    );
+  return (
+    <div className="grid gap-2">
+      <Label className="text-sm font-medium">{label}</Label>
+      <Input
+        placeholder={placeholder}
+        type={type}
+        {...registerProps}
+      />
+    </div>
+  );
 }

@@ -11,7 +11,9 @@
     "ConnectWallet": "Connecter le portefeuille",
     "Disconnected": "Déconnecté",
     "SignIn": "Se connecter",
-    "SignUp": "S'inscrire"
+    "SignUp": "S'inscrire",
+    "Profile": "Profile",
+    "Setting": "Paramètre"
   },
   "Generator": {
     "Settings": "Paramètre",

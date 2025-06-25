@@ -39,7 +39,7 @@ model User {
   name              String?
   email             String?   @unique
   emailVerified     DateTime?
-  image             String?
+  image             String?   @unique
   password          String?
   address           String   @unique
   signature         String?
@@ -52,6 +52,9 @@ model User {
   updatedAt         DateTime  @updatedAt
   accounts          Account[]
   sessions          Session[]
+
+  createdProducts   Product[] @relation("CreatedProducts")
+  Product           Product[] @relation("ProfileUser")
 }
 
 model VerificationRequest {
@@ -72,3 +75,22 @@ model Nonce {
   createdAt DateTime @default(now())
 }
 
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  creator     String?
+  price       Float
+  image       String
+  profile     String?
+  description String?
+  tokenId     String?
+  contract    String?
+  owner       String?
+  mintedOn    DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  creatorUser User?    @relation("CreatedProducts", fields: [creator], references: [id])
+  profileUser User?    @relation("ProfileUser", fields: [profile], references: [image])
+}

@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CardImageGenerated } from "../card/cardImageGenerated";
 import { useTranslations } from "next-intl";
-import { generateImageByIA } from "@/services/serviceStableDiffusion";
+import { generateImageByIA } from "@/services/ServiceStableDiffusion";
 
 const ratiosImages = [
   {

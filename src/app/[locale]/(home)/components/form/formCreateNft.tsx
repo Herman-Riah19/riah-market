@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ethers, Contract } from "ethers";
 import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json";
 import { ImageDown } from "lucide-react";
-import { uploadToPinata } from "@/services/servicePinata";
+import { uploadToPinata } from "@/services/ServicePinata";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";

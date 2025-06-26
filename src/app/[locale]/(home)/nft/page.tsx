@@ -8,7 +8,7 @@ import {
 } from 'nuqs/server'
 import { ListProductContent } from "../components/container/listProductContent";
  
-export const searchParamsCache = createSearchParamsCache({
+const searchParamsCache = createSearchParamsCache({
   search: parseAsString.withDefault(''),
   maxResults: parseAsInteger.withDefault(10)
 })

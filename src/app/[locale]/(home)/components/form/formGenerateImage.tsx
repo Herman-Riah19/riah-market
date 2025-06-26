@@ -3,7 +3,6 @@ import { LabelledSelectFieldWithIcon } from "@/components/form/labelledSelectFie
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form } from "@/components/ui/form";
 import { GenerateImageSchema } from "@/validators/generate-image-validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";

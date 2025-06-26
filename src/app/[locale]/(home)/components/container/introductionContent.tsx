@@ -12,21 +12,21 @@ export function IntroductionContent() {
           <Image
             src="/asset/images/image_2.jpg" 
             alt="NFT Card"
-            width={160}
+            width={200}
             height={260}
             className="rotate-[-10deg] shadow-xl rounded-xl"
           />
           <Image
             src="/asset/images/image_3.jpg"
             alt="NFT Card"
-            width={160}
+            width={200}
             height={260}
             className="rotate-[5deg] shadow-xl rounded-xl"
           />
           <Image
             src="/asset/images/image_4.jpg"
             alt="NFT Card"
-            width={160}
+            width={200}
             height={260}
             className="rotate-[-3deg] shadow-xl rounded-xl"
           />

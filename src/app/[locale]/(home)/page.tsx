@@ -3,13 +3,18 @@ import { IntroductionContent } from "./components/container/introductionContent"
 import { ListCreatorContent } from "./components/container/listCreatorContent";
 import { ListProductContent } from "./components/container/listProductContent";
 import { ServiceContents } from "./components/container/servicesContent";
+import { listProducts } from "./services/ServiceProduct";
 
-export default function Home() {
-  
+export default async function Home() {
+  const { success, products } = await listProducts({
+    filter: 4
+  });
+  if (!success) return <div> loading products</div>;
+
   return (
     <main role="main" className="m-0 p-0">
       <IntroductionContent />
-      <ListProductContent />
+      <ListProductContent products={products} />
       <ServiceContents />
       <ListCreatorContent />
       <CreateContent />

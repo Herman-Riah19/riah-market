@@ -54,7 +54,10 @@ model User {
   sessions          Session[]
 
   createdProducts   Product[] @relation("CreatedProducts")
-  Product           Product[] @relation("ProfileUser")
+  profileProducts   Product[] @relation("ProfileUser")
+  ownerProducts     Product[] @relation("OwnerUser")
+  buyerProducts     Product[] @relation("BuyerUser")
+
 }
 
 model VerificationRequest {
@@ -86,6 +89,7 @@ model Product {
   tokenId     String?
   contract    String?
   owner       String?
+  buyer       String?
   mintedOn    DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -93,4 +97,6 @@ model Product {
   // Relations
   creatorUser User?    @relation("CreatedProducts", fields: [creator], references: [id])
   profileUser User?    @relation("ProfileUser", fields: [profile], references: [image])
+  ownerUser   User?    @relation("OwnerUser", fields: [owner], references: [address])
+  buyerUser   User?    @relation("BuyerUser", fields: [buyer], references: [address])
 }

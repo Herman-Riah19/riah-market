@@ -15,18 +15,25 @@ type CreateProductInput = {
   owner: string;
 };
 
-type UpdateProductInput = Partial<CreateProductInput> & { id: string };
+type UpdateProductInput = Partial<CreateProductInput> & { id: string, buyer: string };
 
 export async function saveProduct(input: CreateProductInput) {
   const user = await getUserConnected();
   const result = createProductSchema.safeParse(input);
   if (!result.success) return { success: false, error: result.error };
 
+  if (!user) return { success: false, error: "User not authenticated" };
+
+  if(user.address !== input.owner) {
+    return { success: false, error: "Owner address does not match user address" };
+  }
+
   try {
     const product = await prisma.product.create({
       data: {
         ...input,
         creator: user?.id,
+        mintedOn: new Date(),
       },
     });
     return { success: true, product };
@@ -35,10 +42,32 @@ export async function saveProduct(input: CreateProductInput) {
   }
 }
 
-export async function listProducts() {
+export async function listProducts({ name, filter }: { name?: string, filter?: number } = {}) {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      where: {
+        title: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      take: filter ? filter : undefined,
+    });
     return { success: true, products };
+  } catch (error) {
+    return { success: false, error: (error as Error).message };
+  }
+}
+
+export async function getProductById(id: string) {
+  const result = deleteProductSchema.safeParse({ id });
+  if (!result.success) return { success: false, error: result.error };
+
+  try {
+    const product = await prisma.product.findUnique({ where: { id } });
+    if (!product) return { success: false, error: "Product not found" };
+    return { success: true, product };
   } catch (error) {
     return { success: false, error: (error as Error).message };
   }

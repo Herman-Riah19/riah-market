@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ethers, Contract } from "ethers";
 import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json";
 import { ImageDown } from "lucide-react";
-import { uploadToPinata } from "@/services/ServicePinata";
+import { uploadToPinata } from "@/services/servicePinata";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { createProductSchema } from "@/validators/product-schema";
-import { saveProduct } from "@/app/[locale]/(home)/services/ServiceProduct";
+import { saveProduct } from "@/services/serviceProduct";
 import { useToast } from "@/hooks/useToast";
 
 type FormValues = z.infer<typeof createProductSchema>;

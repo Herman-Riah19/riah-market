@@ -1,9 +1,9 @@
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { products } from "@/datas/product-data";
 import { TabsNFTDetails } from "@/components/tabs/tabsNftDetail";
-import { getProductById } from "../../services/ServiceProduct";
+import { getProductById } from "@/services/serviceProduct";
 import { GATEWAY_URL } from "@/constants/env";
+import { getUserByAddressAction } from "@/services/serviceUser";
 
 interface NFTDetailPageProps {
   params: Promise<{ id: string }>;
@@ -15,13 +15,19 @@ export default async function NFTDetailPage({ params }: NFTDetailPageProps) {
 
   if (!nftData.success) return <div>Loading...</div>;
 
-  console.log("nftData: ", nftData.product?.image);
-
   const product = nftData.product;
   if (!product) return <div>Product not found</div>;
 
+  if (!product.owner) return <div>Owner address not available</div>;
+
+  const owner = await getUserByAddressAction(product.owner);
+  if (!owner.success) return <div>Error fetching owner information</div>;
+
+  if (!owner.user) return <div>Owner not found</div>;
+  const user = owner.user;
+
   return (
-    <div className="p-6 mx-auto max-w-12xl">
+    <div className="p-6 mx-auto max-w-12xl min-h-screen">
       <Card className="bg-background border border-border">
         <CardHeader className="ml-6">
           <CardTitle className="text-3xl font-bold capitalize">{product.title}</CardTitle>
@@ -39,10 +45,10 @@ export default async function NFTDetailPage({ params }: NFTDetailPageProps) {
           {/* NFT Info and Tabs */}
           <div className="md:col-span-3 space-y-4">
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+              <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
                 <div className="flex flex-col space-y-1">
                   <span className="text-xs uppercase text-gray-400">Owner</span>
-                  <span className="font-medium">{product.owner}</span>
+                  <span className="font-medium">{user.name}</span>
                 </div>
                 <div className="flex flex-col space-y-1">
                   <span className="text-xs uppercase text-gray-400">
@@ -60,15 +66,10 @@ export default async function NFTDetailPage({ params }: NFTDetailPageProps) {
                 </div>
                 <div className="flex flex-col space-y-1">
                   <span className="text-xs uppercase text-gray-400">
-                    Contract
+                    Price
                   </span>
-                  <span className="font-medium">{product.contract}</span>
+                  <span className="font-medium">{product.price}</span>
                 </div>
-              </div>
-
-              <div className="mt-4">
-                <span className="text-xs uppercase text-gray-400">Price</span>
-                <p className="text-lg font-semibold ">{product.price}</p>
               </div>
 
               <Button variant="secondary" className="mt-2 w-full">

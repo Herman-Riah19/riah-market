@@ -3,7 +3,7 @@ import { IntroductionContent } from "./components/container/introductionContent"
 import { ListCreatorContent } from "./components/container/listCreatorContent";
 import { ListProductContent } from "./components/container/listProductContent";
 import { ServiceContents } from "./components/container/servicesContent";
-import { listProducts } from "./services/ServiceProduct";
+import { listProducts } from "../../../services/serviceProduct";
 
 export default async function Home() {
   const { success, products } = await listProducts({

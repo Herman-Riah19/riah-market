@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SearchInput } from "../components/searchInput";
-import { listProducts } from "../services/ServiceProduct";
+import { listProducts } from "@/services/serviceProduct";
 import {
   createSearchParamsCache,
   parseAsInteger,

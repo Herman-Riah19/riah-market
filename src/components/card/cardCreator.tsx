@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
-import { Creator } from '@/datas/creator-data';
+import { Creator } from '@/data/creator-data';
 
 export const CardCreator: React.FC<Creator> = ({ name, value, image, rank = 1 }) => {
   return (

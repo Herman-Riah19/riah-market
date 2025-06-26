@@ -1,7 +1,7 @@
 "use client"
 
 import { CardCreator } from "@/components/card/cardCreator";
-import { creators } from "@/datas/creator-data";
+import { creators } from "@/data/creator-data";
 
 export function ListCreatorContent () {
   return (

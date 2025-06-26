@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { Product } from "@/datas/product-data";
+import { Product } from "@/data/product-data";
 
 
 export const CardNftIntro: React.FC<Product> = ({

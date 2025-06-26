@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { Product } from "@/datas/product-data";
+import { Product } from "@/data/product-data";
 
 export const CardProduct: React.FC<Product> = ({
   id,

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
-import { userRegister } from "../services/signoutAction";
+import { userRegister } from "@/services/serviceUser";
 import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import Link from "next/link";
 import { useLocale } from "next-intl";

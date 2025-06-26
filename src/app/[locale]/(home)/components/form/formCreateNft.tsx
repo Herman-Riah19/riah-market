@@ -80,7 +80,6 @@ export function FormCreateNft({
             : JSON.stringify(response.error)
         );
       }
-      console.log("Product saved successfully:", response.product);
 
       setValue("title", "");
       setValue("description", "");

@@ -15,6 +15,11 @@
     "Profile": "Profile",
     "Setting": "Paramètre"
   },
+  "Sidebar": {
+    "Profile": "Profile",
+    "Settings": "Paramètre",
+    "Logout": "Deconnexion"
+  },
   "Generator": {
     "Settings": "Paramètre",
     "Output": "Sortie",
@@ -40,5 +45,29 @@
     "ToastSuccessID": "Les identifiants d'image ont été générés",
     "ToastError": "Il y a l'erreur de génération",
     "Wait10Seconde": "La génération est toujours en cours, réessayez dans 10 secondes."
+  },
+  "Profile": {
+    "address": "Votre adresse",
+    "email": "Votre e-mail",
+    "name": "Votre nom",
+    "Account": {
+      "Title": "Informations du compte",
+      "Description": "Modifiez les informations de votre compte ici. Cliquez sur enregistrer lorsque vous avez terminé.",
+      "Username": "Nom d'utilisateur",
+      "SaveChanges": "Enregistrer les modifications",
+      "Saving": "Enregistrement...",
+      "UsernameUpdated": "Nom d'utilisateur mis à jour avec succès",
+      "UsernameUpdateFailed": "Échec de la mise à jour du nom d'utilisateur"
+    },
+    "Password": {
+      "Title": "Mot de passe",
+      "Description": "Changez votre mot de passe ici. Après l'enregistrement, vous serez déconnecté.",
+      "NewPassword": "Nouveau mot de passe",
+      "ConfirmPassword": "Confirmer le mot de passe",
+      "SaveChanges": "Enregistrer les modifications",
+      "Saving": "Enregistrement...",
+      "PasswordUpdated": "Mot de passe mis à jour avec succès",
+      "PasswordUpdateFailed": "Échec de la mise à jour du mot de passe"
+    }
   }
 }

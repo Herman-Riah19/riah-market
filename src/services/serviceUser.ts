@@ -1,4 +1,5 @@
 "use server";
+import { getUserConnected } from "@/lib/authentification";
 import { Hashing, hashPassword } from "@/lib/hash";
 import { prisma } from "@/utils/prisma";
 import jwt from "jsonwebtoken";
@@ -86,5 +87,68 @@ export async function getUserByAddressAction(address: string) {
       error:
         error instanceof Error ? error.message : "An unexpected error occurred",
     };
+  }
+}
+
+export async function userUpdate({ name }: { name: string }) {
+  try {
+    const existUser = await getUserConnected();
+
+    const user = await prisma.user.update({
+      where: {
+        email: existUser?.email as string
+      },
+      data: {
+        name,
+      },
+    });
+
+    console.log(user)
+
+    revalidatePath('/setting');
+    redirect('/setting');
+  } catch (error) {
+    console.log(error);
+    return error
+  }
+}
+
+export async function changePassword({ password, confirmPassword } : { password: string, confirmPassword:  string }) {
+  try {
+    const existUser = await getUserConnected();
+    
+    if(password !== confirmPassword) {
+      throw new Error('Your password was not equal')
+    }
+
+    const { salt, hash } = hashPassword(password as string) as Hashing
+    const user = await prisma.user.update({
+      where: {
+        email: existUser?.email as string
+      },
+      data: {
+        password: hash,
+        salt,
+      },
+    });
+
+    const secretKey = "secret";
+    const rememberMeToken = jwt.sign({ userId: user.id }, secretKey, {
+      expiresIn: "7d",
+    });
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        rememberMe: rememberMeToken,
+      },
+    });
+    console.log(user)
+
+    revalidatePath('/setting');
+    redirect('/setting');
+  } catch (error) {
+    console.log(error);
+    return error
   }
 }

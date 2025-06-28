@@ -42,6 +42,21 @@ export async function saveProduct(input: CreateProductInput) {
   }
 }
 
+export async function getAllImageGenerated() {
+    try {
+        const user = await getUserConnected()
+        const images = await prisma.product.findMany({
+            where: {
+                creator: user?.id
+            },
+        })
+        return images;
+    } catch (error) {
+        console.log(error)
+    }
+  }
+  
+
 export async function listProducts({ name, filter }: { name?: string, filter?: number } = {}) {
   try {
     const products = await prisma.product.findMany({

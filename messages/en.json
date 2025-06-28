@@ -15,6 +15,11 @@
     "Profile": "Profile",
     "Setting": "Setting"
   },
+  "Sidebar": {
+    "Profile": "Profile",
+    "Settings": "Settings",
+    "Logout": "Logout"
+  },
   "Generator": {
     "Settings": "Settings",
     "Output": "Output",
@@ -40,5 +45,29 @@
     "ToastSuccessID": "Image ID are been Generated",
     "ToastError": "There are the error of generation",
     "Wait10Seconde": "Generation is still running, try again in 10 seconds."
+  },
+  "Profile": {
+    "address": "Your address",
+    "email": "Your email",
+    "name": "Your name",
+    "Account": {
+      "Title": "Account Information",
+      "Description": "Make changes to your account here. Click save when you're done.",
+      "Username": "Username",
+      "SaveChanges": "Save Changes",
+      "Saving": "Saving...",
+      "UsernameUpdated": "Username updated successfully",
+      "UsernameUpdateFailed": "Failed to update username"
+    },
+    "Password": {
+      "Title": "Password",
+      "Description": "Change your password here. After saving, you'll be logged out.",
+      "NewPassword": "New password",
+      "ConfirmPassword": "Confirm password",
+      "SaveChanges": "Save Changes",
+      "Saving": "Saving...",
+      "PasswordUpdated": "Password updated successfully",
+      "PasswordUpdateFailed": "Failed to update password"
+    }
   }
 }

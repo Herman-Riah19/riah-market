@@ -9,12 +9,17 @@ export default async function Home() {
   const { success, products } = await listProducts({
     filter: 4
   });
-  if (!success) return <div> loading products</div>;
 
   return (
     <main role="main" className="m-0 p-0">
       <IntroductionContent />
-      <ListProductContent products={products} />
+      {!success ? (
+        <div className="text-center text-secondary-foreground mt-4">
+          <p className="text-xl font-bold">Loading products...</p>
+        </div>
+      ) : (
+        <ListProductContent products={products} />
+      )}
       <ServiceContents />
       <ListCreatorContent />
       <CreateContent />

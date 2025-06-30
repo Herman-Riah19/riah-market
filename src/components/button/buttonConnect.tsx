@@ -37,7 +37,7 @@ export const ButtonConnectWallet = () => {
 
       console.log("Signature:", signature);
 
-      const response = await signIn("wallet", {
+      const response = await signIn("authorize", {
         address,
         signature,
         redirect: false,

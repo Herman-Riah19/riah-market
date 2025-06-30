@@ -73,25 +73,44 @@ export const authConfig: NextAuthOptions = {
       },
     }),
     CredentialsProvider({
-      name: "wallet",
+      id: "authorize",
+      name: "authorize",
       credentials: {
         address: { label: "Address", type: "text" },
         signature: { label: "Signature", type: "text" },
       },
       async authorize(credentials) {
         const { address, signature } = credentials ?? {};
-        if (!signature || !address) return null;
+        console.log("Authorize called with:", { address, signature });
+
+        if (!signature || !address) {
+          console.error("Missing signature or address");
+          return null;
+        }
+
         const record = await prisma.nonce.findUnique({
           where: { address: address.toLowerCase() },
         });
 
-        if(!record) return null;
+        if (!record) {
+          console.error("No nonce record found for address", address);
+          return null;
+        }
 
         const nonce = record.nonce;
         const message = `Login with nonce: ${nonce}`;
-        const signerAddr = ethers.verifyMessage(message, signature);
+        let signerAddr;
+        try {
+          signerAddr = ethers.verifyMessage(message, signature);
+        } catch (e) {
+          console.error("Signature verification failed:", e);
+          return null;
+        }
 
-        if (signerAddr.toLowerCase() !== address.toLowerCase()) return null;
+        if (signerAddr.toLowerCase() !== address.toLowerCase()) {
+          console.error("Signature mismatch", signerAddr, address);
+          return null;
+        }
 
         await prisma.nonce.delete({
           where: { address: address.toLowerCase() },
@@ -99,10 +118,12 @@ export const authConfig: NextAuthOptions = {
 
         let user = await prisma.user.findUnique({ where: { address } });
         if (!user) {
-          user = await prisma.user.create({ data: { address, name: "User"+ randomUUID() } });
+          user = await prisma.user.create({
+            data: { address, name: "User" + randomUUID() },
+          });
         }
 
-        console.log("user :", user);
+        console.log("Authenticated user:", user);
         return user;
       },
     }),

@@ -24,11 +24,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdnb.artstation.com088',
+        hostname: 'cdnb.artstation.com',
         port: '',
         pathname: '/p/assets/images/images/**',
       },
-
     ],
   },
 };

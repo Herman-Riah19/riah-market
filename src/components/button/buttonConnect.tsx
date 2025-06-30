@@ -25,17 +25,11 @@ export const ButtonConnectWallet = () => {
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
 
-      console.log("Connected address:", address);
-
       const res = await fetch(`/api/auth/nonce?address=${address}`);
       const { nonce } = await res.json();
 
-      console.log(nonce);
-
       const message = `Login with nonce: ${nonce}`;
       const signature = await signer.signMessage(message);
-
-      console.log("Signature:", signature);
 
       const response = await signIn("authorize", {
         address,
@@ -43,7 +37,7 @@ export const ButtonConnectWallet = () => {
         redirect: false,
         callbackUrl: "/",
       });
-      console.log("Response from signIn:", response);
+      
       if (response?.ok && response.url) {
         router.push(response.url);
       } else {

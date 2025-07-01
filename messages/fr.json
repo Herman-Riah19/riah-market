@@ -13,7 +13,10 @@
     "SignIn": "Se connecter",
     "SignUp": "S'inscrire",
     "Profile": "Profile",
-    "Setting": "Paramètre"
+    "Setting": "Paramètre",
+    "Legal": "Légal",
+    "PrivacyPolicy": "Politique de confidentialité",
+    "TermsOfService": "Conditions d'utilisation"
   },
   "Sidebar": {
     "Profile": "Profile",

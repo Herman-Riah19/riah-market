@@ -1,7 +1,55 @@
-"use client"
+"use server"
+import { getLocale, getTranslations } from "next-intl/server";
 import Link from "next/link";
 
-const Footer = () => {
+export const Footer = async () => {
+  const t = await getTranslations('Navbar');
+  const locale = await getLocale();
+
+  const pages = [
+    {
+      name: t('Home'),
+      link: `/${locale}/`,
+    },
+    {
+      name: t('Explore'),
+      link: `/${locale}/nft`,
+    },
+    {
+      name: t('Create'),
+      link: `/${locale}/create`,
+    },
+    {
+      name: t("About"),
+      link: `/${locale}/about`,
+    },
+  ];
+
+  const linkProfile = [
+    {
+      name: t('Profile'),
+      link: `/${locale}/profile`,
+    },
+    {
+      name: t('Setting'),
+      link: `/${locale}/profile/setting`,
+    },
+  ]
+
+  const linkLegal = [
+    {
+      name: t('Legal'),
+      link: `/${locale}/about`,
+    },
+    {
+      name: t('TermsOfService'),
+      link: `/${locale}/terms`,
+    },
+    {
+      name: t('PrivacyPolicy'),
+      link: `/${locale}/privacy`,
+    },
+  ]
 
   return (
     <footer id="footer" className="bg-muted">
@@ -18,84 +66,32 @@ const Footer = () => {
           </Link>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-4">
           <h3 className="font-bold text-lg">Sommary</h3>
-          <div>
-            <Link
-              href={`/`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Home
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/about`}
-              className="opacity-60 hover:opacity-100"
-            >
-              About
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/pricing`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Pricing
-            </Link>
-          </div>
+          {pages.map((page) => (
+            <div key={page.link}>
+              <Link
+                href={page.link}
+                className="opacity-60 hover:opacity-100"
+              >
+                {page.name}
+              </Link>
+            </div>
+          ))}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <h3 className="font-bold text-lg">Platforms</h3>
-          <div>
-            <Link
-              href={`/midas/generate`}
-              className="opacity-60 hover:opacity-100"
-            >
-                Generate
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/midas/generate/change`}
-              className="opacity-60 hover:opacity-100"
-            >
-            Change
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/midas/generate/upscale`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Upscale
-            </Link>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-4">
           <h3 className="font-bold text-lg">User</h3>
-          <div>
-            <Link
-              href={`/midas/profile`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Profile
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/midas/profile/setting`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Setting
-            </Link>
-          </div>
+          {linkProfile.map((page) => (
+            <div key={page.link}>
+              <Link
+                href={page.link}
+                className="opacity-60 hover:opacity-100"
+              >
+                {page.name}
+              </Link>
+            </div>
+          ))}
           <div>
             <Link
               href={`/contact`}
@@ -106,34 +102,18 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-4">
           <h3 className="font-bold text-lg">About</h3>
-          <div>
-            <Link
-              href={`/legale`}
-              className="opacity-60 hover:opacity-100"
-            >
-             Legal
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/term`}
-              className="opacity-60 hover:opacity-100"
-            >
-            Term
-            </Link>
-          </div>
-
-          <div>
-            <Link
-              href={`/licence`}
-              className="opacity-60 hover:opacity-100"
-            >
-              Licence
-            </Link>
-          </div>
+          {linkLegal.map((page) => (
+            <div key={page.link}>
+              <Link
+                href={page.link}
+                className="opacity-60 hover:opacity-100"
+              >
+                {page.name}
+              </Link>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -141,7 +121,7 @@ const Footer = () => {
         <h3>
           &copy; 2024 Made {" "}
           <Link
-            href="https://midas-stability.vercel.app/"
+            href="https://riah-market.vercel.app/"
             className="text-primary transition-all border-primary hover:border-b-">
             Synergie Mad
           </Link>
@@ -150,5 +130,3 @@ const Footer = () => {
     </footer>
   );
 }
-
-export default Footer;

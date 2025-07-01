@@ -28,8 +28,9 @@ const services = [
 
 export function ServiceContents() {
   return (
-    <section className="bg-muted p-8 m-6 grid grid-cols-3 gap-8">
-      <h2 className="col-span-3 text-3xl font-bold mb-6">Our Services</h2>
+    <section className="bg-muted p-8 m-6">
+      <h2 className="text-3xl font-bold mb-6">Our Services</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {services.map((service, idx) => (
         <Card key={idx} className="p-4 hover:shadow-lg transition-shadow">
           <CardHeader className="space-y-4">
@@ -44,6 +45,7 @@ export function ServiceContents() {
           </CardContent>
         </Card>
       ))}
+      </div>
     </section>
   );
 }

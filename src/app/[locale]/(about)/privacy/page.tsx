@@ -1,19 +1,28 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+"use client"
+import React from "react";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { privacySections } from "@/data/privacy-policy";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle>Privacy Policy</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-gray-700">
-          <p>We respect your privacy and are committed to protecting your personal data.</p>
-          <p>All user information is handled with care and stored securely.</p>
-          <p>We do not share your information with third parties without consent.</p>
-          <p>If you have any concerns, please contact our support team.</p>
-        </CardContent>
-      </Card>
+    <div className="p-6 max-w-3xl mx-auto space-y-8">
+       <h1 className="text-4xl font-bold mb-8 text-center">Privacy Policy</h1>
+      {privacySections.map((section, idx) => (
+        <Card key={idx} className="bg-transparent border-none shadow-none">
+          <CardHeader>
+            <CardTitle>{section.title}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm text-gray-700">
+            <CardDescription>
+              <ul className="list-disc">
+                {section.paragraphs.map((text, i) => (
+                  <li key={i}>{text}</li>
+                ))}
+              </ul>
+            </CardDescription>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

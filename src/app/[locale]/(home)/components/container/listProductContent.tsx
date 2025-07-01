@@ -8,7 +8,7 @@ export function ListProductContent({ products }: { products?: Product[] }) {
   return (
     <section className="m-8">
       <h3 className="text-2xl font-bold mb-4">Live auction</h3>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {products?.map((prod, index) => (
           <div key={index}>
             <CardProduct

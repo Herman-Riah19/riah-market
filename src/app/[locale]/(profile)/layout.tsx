@@ -4,6 +4,7 @@ import { getAuthSession } from "@/lib/authentification";
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { Navbar } from "@/components/navbar/navbar";
+import { Footer } from "@/components/footer";
 
 const MidasLayout = async ({ children }: React.PropsWithChildren) => {
   const session = await getAuthSession()
@@ -25,6 +26,7 @@ const MidasLayout = async ({ children }: React.PropsWithChildren) => {
           </div>
         </div>
       </div>
+      <Footer />
     </section>
   );
 };

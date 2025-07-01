@@ -24,6 +24,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'chocolate-quickest-roundworm-127.mypinata.cloud',
+        port: '',
+        pathname: '/ipfs/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdnb.artstation.com',
         port: '',
         pathname: '/p/assets/images/images/**',

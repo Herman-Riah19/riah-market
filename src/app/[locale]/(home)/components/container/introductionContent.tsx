@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export function IntroductionContent() {
   return (
-    <section className="relative bg-muted m-2 p-4">
-      <div className="grid grid-cols-2 gap-2 m-2">
+    <section className="relative bg-muted m-2 p-4 overflow-hidden">
+      <div className="block md:grid grid-cols-2 gap-4 m-2">
         <CardPresentation />
-        <div className="hidden md:flex gap-4 pr-6 z-10">
+        <div className="hidden md:flex gap-4 pr-6 z-0">
           <Image
             src="/asset/images/image_2.jpg" 
             alt="NFT Card"
@@ -28,7 +28,7 @@ export function IntroductionContent() {
             alt="NFT Card"
             width={200}
             height={260}
-            className="rotate-[-3deg] shadow-xl rounded-xl"
+            className="hidden lg:block rotate-[-3deg] shadow-xl rounded-xl"
           />
         </div>
       </div>

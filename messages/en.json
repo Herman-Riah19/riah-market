@@ -13,7 +13,10 @@
     "SignIn": "Sign In",
     "SignUp": "Sign Out",
     "Profile": "Profile",
-    "Setting": "Setting"
+    "Setting": "Setting",
+    "Legal": "Legal",
+    "PrivacyPolicy": "Privacy Policy",
+    "TermsOfService": "Terms of Service"
   },
   "Sidebar": {
     "Profile": "Profile",

@@ -23,19 +23,20 @@ export const CardProduct: React.FC<Product> = ({
   const local = useLocale();
   return (
     <Link href={`/${local}/nft/${id}`}>
-      <Card>
-        <CardHeader
-          className="h-[35vh] w-[20vw] m-3"
-          style={{
-            backgroundImage: `url(${image})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        />
-        <CardContent>
-          <CardTitle>{title}</CardTitle>
+      <Card className="p-0 overflow-hidden gap-1">
+        <CardHeader className="h-[60vh] w-full m-0 p-0 relative">
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="rounded-none object-cover object-top translate-y-0"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </CardHeader>
+        <CardContent className="p-0 m-0">
+          <CardTitle className="p-2 m-0">{title}</CardTitle>
         </CardContent>
-        <CardFooter className="flex flex-row justify-between w-[20vw]">
+        <CardFooter className="p-2 m-0 flex flex-row justify-between">
           <div className="flex flex-col text-center">
             <h4 className="text-md font-normal">Minted on</h4>
             <h3 className="text-lg font-bold text-primary">{mintedOn}</h3>

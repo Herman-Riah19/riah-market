@@ -42,7 +42,7 @@ export const Navbar: React.FC = async () => {
   ];
 
   return (
-    <header className="sticky top-0 flex h-16 z-10 items-center gap-1 border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6">
+    <header className="sticky top-0 flex h-16 z-10 items-center gap-2 border-b bg-background backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6">
       <Link
         href="/"
         className="flex items-center gap-6 text-lg font-semibold md:text-base"
@@ -51,7 +51,7 @@ export const Navbar: React.FC = async () => {
       </Link>
       <NavbarSheet pages={pages} />
 
-      <nav className="flex flex-col text-lg font-medium sm:hidden md:flex justify-end md:flex-row md:items-center md:gap-3 md:text-sm lg:gap-6">
+      <nav className="hidden md:flex flex-col text-lg font-medium justify-end md:flex-row md:items-center md:gap-3 md:text-sm lg:gap-6">
         {pages.map((page) => (
           <Link
             key={page.name}

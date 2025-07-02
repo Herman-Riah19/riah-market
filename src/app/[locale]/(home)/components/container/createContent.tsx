@@ -1,7 +1,7 @@
 import React from 'react'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, LineChart } from 'lucide-react'
+import { OverlappingImage } from './overlappingImage'
 
 export const CreateContent = () => {
   return (
@@ -23,40 +23,11 @@ export const CreateContent = () => {
         </div>
       </div>
 
-      {/* Right Side Background Illustration */}
       <div className="absolute inset-0">
-        <Image
-          src="/images/bg-lines.svg" // Replace with actual SVG or background design
-          alt="Background pattern"
-          fill
-          className="object-cover opacity-20"
-        />
+        <LineChart />
       </div>
 
-      {/* Right Side Cards (Overlapping NFTs) */}
-      <div className="hidden md:flex gap-4 pr-6 z-0">
-        <Image
-          src="/asset/images/image_2.jpg" // Replace with your actual mock card image
-          alt="NFT Card"
-          width={160}
-          height={260}
-          className="rotate-[-10deg] shadow-xl rounded-xl"
-        />
-        <Image
-          src="/asset/images/image_3.jpg"
-          alt="NFT Card"
-          width={160}
-          height={260}
-          className="rotate-[5deg] shadow-xl rounded-xl"
-        />
-        <Image
-          src="/asset/images/image_4.jpg"
-          alt="NFT Card"
-          width={160}
-          height={260}
-          className="rotate-[-3deg] shadow-xl rounded-xl"
-        />
-      </div>
+      <OverlappingImage />
     </div>
   )
 }

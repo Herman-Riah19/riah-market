@@ -1,22 +1,23 @@
 "use client"
 import React, { useTransition } from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from "next-intl";
 import Image from 'next/image';
 
 export const NavLangue = () => {
   const [isPending, startTransition] = useTransition();
+  const path = usePathname();
   const route = useRouter();
   const localActive = useLocale();
 
   return (
     <div className="flex w-full justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
       <Select
-        onValueChange={(e) => startTransition(() => route.replace(`/${e}`))}
+        onValueChange={(e) => startTransition(() => route.replace(`/${e}/${path.split('/')[2] || ''}`))}
         defaultValue={localActive}
         disabled={isPending}>
-        <SelectTrigger className="w-[50px]">
+        <SelectTrigger className="w-[70px]">
           <SelectValue placeholder="Change language" />
         </SelectTrigger>
         <SelectContent>

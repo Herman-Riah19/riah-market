@@ -34,7 +34,7 @@ export const CreateContent = () => {
       </div>
 
       {/* Right Side Cards (Overlapping NFTs) */}
-      <div className="hidden md:flex gap-4 pr-6 z-10">
+      <div className="hidden md:flex gap-4 pr-6 z-0">
         <Image
           src="/asset/images/image_2.jpg" // Replace with your actual mock card image
           alt="NFT Card"

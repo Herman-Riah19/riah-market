@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# **AI-Generated NFT Digital Art Collection**
 
-First, run the development server:
+Une application complète permettant de générer, gérer et publier des œuvres d’art numériques sous forme de **NFT** grâce à l’**intelligence artificielle**.
+Elle combine **Next.js** pour le frontend, **Prisma** pour la base de données, et **Hardhat** pour le déploiement des smart contracts.
+
+---
+
+## **Prérequis**
+
+Assurez-vous d’avoir installé :
+
+* [Node.js](https://nodejs.org/) (version recommandée : 18+)
+* [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+* [PostgreSQL](https://www.postgresql.org/) (ou autre base compatible Prisma)
+* [Metamask](https://metamask.io/) ou tout autre wallet pour interagir avec les smart contracts.
+
+---
+
+## **1. Installation des dépendances**
+
+Clonez le projet et installez les dépendances :
+
+```bash
+git clone https://github.com/Herman-Riah19/riah-market.git
+cd ai-nft-collection
+npm install
+```
+
+---
+
+## **2. Configuration des variables d’environnement**
+
+Créez un fichier **`.env`** à la racine du projet :
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/nftdb"
+PRIVATE_KEY="votre_clé_privée_pour_hardhat"
+RPC_URL="https://sepolia.infura.io/v3/<votre_api_key>"
+```
+
+---
+
+## **3. Migration Prisma**
+
+Initialisez la base de données avec Prisma :
+
+```bash
+npx prisma migrate dev
+```
+
+Pour visualiser et interagir avec la base :
+
+```bash
+npx prisma studio
+```
+
+---
+
+## **4. Déploiement des smart contracts (Hardhat)**
+
+Compilez et déployez vos contrats sur un réseau de test (ex: Sepolia) :
+
+```bash
+cd blockchain
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network sepolia
+```
+
+Une fois déployé, mettez à jour l’adresse du contrat dans votre fichier de configuration frontend (ex: `constants/contract-address.ts`).
+
+---
+
+## **5. Lancement de l’application**
+
+Revenez à la racine et lancez le serveur Next.js :
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Accédez à l’application : [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## **Fonctionnalités principales**
 
-## Learn More
+* **Génération d’art par IA**
+* **Tokenisation des œuvres en NFT**
+* **Gestion et visualisation de la collection**
+* **Déploiement sur la blockchain via Hardhat**
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## **Scripts utiles**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* `npm run build` → Build de l’application
+* `npx prisma generate` → Regénération du client Prisma
+* `npx hardhat test` → Tests des smart contracts

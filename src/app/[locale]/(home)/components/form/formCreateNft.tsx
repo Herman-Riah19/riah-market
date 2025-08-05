@@ -2,8 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ethers, Contract } from "ethers";
-import MyNFT from "artifacts/contracts/nft_mining.sol/MyNFT.json";
 import { ImageDown } from "lucide-react";
 import { uploadToPinata } from "@/services/ServicePinata";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { MetaMaskIcon } from "@/components/icons/metamaskIcon";
 import { ethers } from "ethers";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { putUserAdress } from "@/services/serviceUser";
+import { useUserAddress } from "@/hooks/useUserAdress";
+import { useShallow } from "zustand/react/shallow";
 
 // Extend the Window interface to include ethereum
 declare global {
@@ -15,7 +16,12 @@ declare global {
 
 export const ButtonConnectWallet = () => {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const { setTokens, address } = useUserAddress(
+    useShallow((state) => ({
+      setTokens: state.setTokens,
+      address: state.address,
+    }))
+  );
 
   const login = async () => {
     try {
@@ -31,19 +37,11 @@ export const ButtonConnectWallet = () => {
       const message = `Login with nonce: ${nonce}`;
       const signature = await signer.signMessage(message);
 
-      const response = await signIn("authorize", {
-        address,
-        signature,
-        redirect: false,
-        callbackUrl: "/",
-      });
-      
-      if (response?.ok && response.url) {
-        router.push(response.url);
-      } else {
-        console.error("Sign-in failed", response?.error);
-        setLoading(false);
-      }
+      const response = await putUserAdress(address, signature);
+      console.log('Response connect: ', response);
+
+      if(!response) throw new Error("Response is empty")
+      setTokens(response?.address, response?.signature)
 
       setLoading(false);
     } catch (error) {

@@ -1,5 +1,4 @@
 import { NextAuthOptions, getServerSession, DefaultSession } from "next-auth";
-import { ethers } from "ethers";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 declare module "next-auth" {
@@ -14,7 +13,6 @@ import { prisma } from "@/utils/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from "jsonwebtoken";
 import { verifyPassword } from "@/lib/hash";
-import { randomUUID } from "crypto";
 
 const secretKey = process.env.NEXTAUTH_SECRET || "defaultSecretKey";
 
@@ -69,61 +67,6 @@ export const authConfig: NextAuthOptions = {
           });
         }
 
-        return user;
-      },
-    }),
-    CredentialsProvider({
-      id: "authorize",
-      name: "authorize",
-      credentials: {
-        address: { label: "Address", type: "text" },
-        signature: { label: "Signature", type: "text" },
-      },
-      async authorize(credentials) {
-        const { address, signature } = credentials ?? {};
-        console.log("Authorize called with:", { address, signature });
-
-        if (!signature || !address) {
-          console.error("Missing signature or address");
-          return null;
-        }
-
-        const record = await prisma.nonce.findUnique({
-          where: { address: address.toLowerCase() },
-        });
-
-        if (!record) {
-          console.error("No nonce record found for address", address);
-          return null;
-        }
-
-        const nonce = record.nonce;
-        const message = `Login with nonce: ${nonce}`;
-        let signerAddr;
-        try {
-          signerAddr = ethers.verifyMessage(message, signature);
-        } catch (e) {
-          console.error("Signature verification failed:", e);
-          return null;
-        }
-
-        if (signerAddr.toLowerCase() !== address.toLowerCase()) {
-          console.error("Signature mismatch", signerAddr, address);
-          return null;
-        }
-
-        await prisma.nonce.delete({
-          where: { address: address.toLowerCase() },
-        });
-
-        let user = await prisma.user.findUnique({ where: { address } });
-        if (!user) {
-          user = await prisma.user.create({
-            data: { address, name: "User" + randomUUID() },
-          });
-        }
-
-        console.log("Authenticated user:", user);
         return user;
       },
     }),

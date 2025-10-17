@@ -14,7 +14,6 @@ import {
 import { Form } from "@/components/ui/form";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { userRegister } from "@/services/serviceUser";
-import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { useState } from "react";
@@ -54,9 +53,7 @@ export function RegisterForm() {
       <CardHeader>
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
-
-        <ButtonConnectWallet />
-
+        
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

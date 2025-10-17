@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FormGenerateImage } from "../components/form/formGenerateImage";
 import { FormCreateNft } from "../components/form/formCreateNft";
 import { Button } from "@/components/ui/button";
+import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 
 export default function PageGenerate() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -21,6 +22,7 @@ export default function PageGenerate() {
 
       {step === "choice" && (
         <div className="flex flex-col gap-4">
+          <ButtonConnectWallet />
           <Button onClick={() => setStep("generate")}>
             Générer une image puis minter
           </Button>

@@ -13,9 +13,12 @@ import { LabelledTextField } from "@/components/form/labelledTextFiled";
 import { createProductSchema } from "@/validators/product-schema";
 import { saveProduct } from "@/services/serviceProduct";
 import { useToast } from "@/hooks/useToast";
+import { ethers } from "ethers";
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract-config";
+import { useUserAddress } from "@/hooks/useUserAdress";
+import { useShallow } from "zustand/react/shallow";
 
 type FormValues = z.infer<typeof createProductSchema>;
-
 export interface IFormCreateNftProps {
   selectedImage?: File | null;
   setSelectedImage?: (image: File | null) => void;
@@ -25,9 +28,12 @@ export function FormCreateNft({
   selectedImage,
   setSelectedImage,
 }: IFormCreateNftProps) {
+  const address = useUserAddress(useShallow((state) => state.address));
+
   const { toast } = useToast();
   const [imageUrl, setImageUrl] = useState("");
   const [minting, setMinting] = useState(false);
+
   const {
     setValue,
     register,
@@ -35,14 +41,19 @@ export function FormCreateNft({
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(createProductSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      price: 0,
+      image: "",
+      owner: address as string,
+    },
   });
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (setSelectedImage) {
-      setSelectedImage(file);
-    }
+    if (setSelectedImage) setSelectedImage(file);
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -50,7 +61,7 @@ export function FormCreateNft({
     setMinting(true);
 
     try {
-      // Upload to Pinata
+      // 1️⃣ Upload image to Pinata
       const fileData = new FormData();
       fileData.set("file", selectedImage);
 
@@ -58,12 +69,41 @@ export function FormCreateNft({
       if (pinataResponse instanceof Error) {
         throw pinataResponse;
       }
-      console.log(pinataResponse.IpfsHash);
+
+      const ipfsHash = pinataResponse.IpfsHash as string;
+      const metadataURL = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
       setImageUrl(pinataResponse.IpfsHash as string);
+
+      // 2️⃣ Connexion au wallet via Metamask
+      if (!(window as any).ethereum) {
+        throw new Error("MetaMask n'est pas installé");
+      }
+
+      await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
+
+      // 3️⃣ Initialiser le contrat
+      const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        CONTRACT_ABI,
+        signer
+      );
+
+      const tx = await contract.mintNFT(
+        data.owner, // recipient
+        metadataURL, // tokenURI
+        data.title, // title
+        metadataURL, // image
+        data.description, // description
+        ethers.parseEther(data.price.toString()), // price en wei si ERC721
+        "Profile info" // profile
+      );
+      await tx.wait();
 
       const response = await saveProduct({
         title: data.title,
-        image: pinataResponse.IpfsHash as string,
+        image: metadataURL,
         price: parseFloat(data.price.toString()),
         description: data.description ?? undefined,
         owner: data.owner,
@@ -79,6 +119,7 @@ export function FormCreateNft({
         );
       }
 
+      // 6️⃣ Réinitialiser le formulaire
       setValue("title", "");
       setValue("description", "");
       setValue("owner", "");
@@ -86,29 +127,24 @@ export function FormCreateNft({
       if (setSelectedImage) setSelectedImage(null);
       setImageUrl("");
 
-      // const provider = new Web3Provider(window.ethereum);
-      // const provider = new ethers.BrowserProvider(window.ethereum);
-      // const signer = await provider.getSigner();
-      // const contract = new Contract(CONTRACT_ADDRESS, MyNFT.abi, signer);
-      // const tx = await contract.mintNFT(account, pinataResponse.IpfsHash);
-      // await tx.wait();
       toast({
-        title: "NFT Minted Successfully",
+        title: "✅ NFT Minted Successfully",
         description: `NFT created with title: ${data.title}`,
-        variant: "default",
       });
     } catch (error) {
       console.error("Minting error:", error);
       toast({
-        title: "Minting Failed",
+        title: "❌ Minting Failed",
         description: `Error: ${
           error instanceof Error ? error.message : String(error)
         }`,
         variant: "destructive",
       });
+    } finally {
+      setMinting(false);
     }
-    setMinting(false);
   };
+
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <Card>
@@ -132,11 +168,7 @@ export function FormCreateNft({
                   accept="image/*"
                   onChange={handleImageChange}
                   className="mb-4"
-                  style={{
-                    position: "absolute",
-                    opacity: 0,
-                    justifyContent: "center",
-                  }}
+                  style={{ position: "absolute", opacity: 0 }}
                 />
                 {!selectedImage && <ImageDown />}
               </Button>
@@ -155,6 +187,7 @@ export function FormCreateNft({
                 </a>
               </div>
             )}
+
             <LabelledTextField
               type="text"
               label="Title"

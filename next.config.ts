@@ -12,7 +12,9 @@ const nextConfig: NextConfig = {
   env: {
     PINATA_API_KEY: process.env.PINATA_API_KEY,
     PINATA_API_SECRET: process.env.PINATA_API_SECRET,
-    PINATA_JSON_TOKEN: process.env.PINATA_JSON_TOKEN
+    PINATA_JSON_TOKEN: process.env.PINATA_JSON_TOKEN,
+    ALCHEMY_URL: process.env.ALCHEMY_URL,
+    PRIVATE_KEY: process.env.PRIVATE_KEY
   },
   images: {
     remotePatterns: [

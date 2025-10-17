@@ -2,9 +2,11 @@
 import { getUserConnected } from "@/lib/authentification";
 import { Hashing, hashPassword } from "@/lib/hash";
 import { prisma } from "@/utils/prisma";
+import { ethers } from "ethers";
 import jwt from "jsonwebtoken";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { randomUUID } from "crypto";
 
 export type ErrorResponse = {
   message: string;
@@ -63,6 +65,54 @@ export async function userRegister({
   }
 }
 
+export async function putUserAdress(address: string, signature: string) {
+  if (!signature || !address) {
+    console.error("Missing signature or address");
+    return null;
+  }
+
+  const record = await prisma.nonce.findUnique({
+    where: { address: address.toLowerCase() },
+  });
+
+  if (!record) {
+    console.error("No nonce record found for address", address);
+    return null;
+  }
+
+  const nonce = record.nonce;
+  const message = `Login with nonce: ${nonce}`;
+  let signerAddr;
+  try {
+    signerAddr = ethers.verifyMessage(message, signature);
+  } catch (e) {
+    console.error("Signature verification failed:", e);
+    return null;
+  }
+
+  if (signerAddr.toLowerCase() !== address.toLowerCase()) {
+    console.error("Signature mismatch", signerAddr, address);
+    return null;
+  }
+
+  await prisma.nonce.delete({
+    where: { address: address.toLowerCase() },
+  });
+
+  let user = await prisma.user.findUnique({ where: { address } });
+  if (!user) {
+    user = await prisma.user.create({
+      data: { address, name: "User" + randomUUID() },
+    });
+  }
+
+  console.log("Authenticated user:", user);
+  return {
+    address: user.address,
+    signature: signerAddr
+  };
+}
+
 export async function getUserByAddressAction(address: string) {
   try {
     if (!address) {
@@ -96,35 +146,41 @@ export async function userUpdate({ name }: { name: string }) {
 
     const user = await prisma.user.update({
       where: {
-        email: existUser?.email as string
+        email: existUser?.email as string,
       },
       data: {
         name,
       },
     });
 
-    console.log(user)
+    console.log(user);
 
-    revalidatePath('/setting');
-    redirect('/setting');
+    revalidatePath("/setting");
+    redirect("/setting");
   } catch (error) {
     console.log(error);
-    return error
+    return error;
   }
 }
 
-export async function changePassword({ password, confirmPassword } : { password: string, confirmPassword:  string }) {
+export async function changePassword({
+  password,
+  confirmPassword,
+}: {
+  password: string;
+  confirmPassword: string;
+}) {
   try {
     const existUser = await getUserConnected();
-    
-    if(password !== confirmPassword) {
-      throw new Error('Your password was not equal')
+
+    if (password !== confirmPassword) {
+      throw new Error("Your password was not equal");
     }
 
-    const { salt, hash } = hashPassword(password as string) as Hashing
+    const { salt, hash } = hashPassword(password as string) as Hashing;
     const user = await prisma.user.update({
       where: {
-        email: existUser?.email as string
+        email: existUser?.email as string,
       },
       data: {
         password: hash,
@@ -143,12 +199,12 @@ export async function changePassword({ password, confirmPassword } : { password:
         rememberMe: rememberMeToken,
       },
     });
-    console.log(user)
+    console.log(user);
 
-    revalidatePath('/setting');
-    redirect('/setting');
+    revalidatePath("/setting");
+    redirect("/setting");
   } catch (error) {
     console.log(error);
-    return error
+    return error;
   }
 }

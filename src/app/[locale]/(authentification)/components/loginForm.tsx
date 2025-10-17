@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import { LabelledTextField } from "@/components/form/labelledTextFiled";
-import { ButtonConnectWallet } from "@/components/button/buttonConnect";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -58,8 +57,6 @@ export function LoginForm() {
       <CardHeader>
         <CardTitle>Welcome back</CardTitle>
         <CardDescription>Sign in to your account</CardDescription>
-
-        <ButtonConnectWallet />
 
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">

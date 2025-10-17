@@ -17,6 +17,7 @@ import { ethers } from "ethers";
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from "@/lib/contract-config";
 import { useUserAddress } from "@/hooks/useUserAdress";
 import { useShallow } from "zustand/react/shallow";
+import { GATEWAY_URL } from "@/constants/env";
 
 type FormValues = z.infer<typeof createProductSchema>;
 export interface IFormCreateNftProps {
@@ -71,7 +72,7 @@ export function FormCreateNft({
       }
 
       const ipfsHash = pinataResponse.IpfsHash as string;
-      const metadataURL = `https://gateway.pinata.cloud/ipfs/${ipfsHash}`;
+      const metadataURL = `${GATEWAY_URL}/${ipfsHash}`;
       setImageUrl(pinataResponse.IpfsHash as string);
 
       // 2️⃣ Connexion au wallet via Metamask

@@ -15,7 +15,7 @@ export function ListProductContent({ products }: { products?: Product[] }) {
               id={prod.id}
               title={prod.title}
               price={prod.price}
-              image={`${GATEWAY_URL}/${prod.image}`}
+              image={`${prod.image}`}
               mintedOn={
                 prod.mintedOn
                   ? new Date(prod.mintedOn).toLocaleDateString("fr-FR", {

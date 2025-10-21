@@ -55,6 +55,7 @@ export default function PageGenerate() {
       {step === "mint" && (
         <>
           <FormCreateNft
+            setStep={setStep}
             selectedImage={selectedImage}
             setSelectedImage={setSelectedImage}
           />

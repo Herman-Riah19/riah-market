@@ -21,11 +21,13 @@ import { GATEWAY_URL } from "@/constants/env";
 
 type FormValues = z.infer<typeof createProductSchema>;
 export interface IFormCreateNftProps {
+  setStep: (step: "choice" | "generate" | "mint") => void;
   selectedImage?: File | null;
   setSelectedImage?: (image: File | null) => void;
 }
 
 export function FormCreateNft({
+  setStep,
   selectedImage,
   setSelectedImage,
 }: IFormCreateNftProps) {
@@ -123,7 +125,7 @@ export function FormCreateNft({
       // 6️⃣ Réinitialiser le formulaire
       setValue("title", "");
       setValue("description", "");
-      setValue("owner", "");
+      setStep("choice");
       setValue("price", 0);
       if (setSelectedImage) setSelectedImage(null);
       setImageUrl("");

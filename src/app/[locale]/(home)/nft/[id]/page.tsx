@@ -36,7 +36,7 @@ export default async function NFTDetailPage({ params }: NFTDetailPageProps) {
         <CardContent className="grid md:grid-cols-5 gap-2">
           <div className="md:col-span-2">
             <img
-              src={`${GATEWAY_URL}/${product.image}`}
+              src={`${product.image}`}
               alt={product.title}
               className="w-full h-auto max-h-[110vh] object-contain rounded"
             />

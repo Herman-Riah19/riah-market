@@ -34,9 +34,22 @@ npm install
 Créez un fichier **`.env`** à la racine du projet :
 
 ```env
+PINATA_API_KEY=""
+PINATA_API_SECRET=""
+PINATA_JWT=""
+NEXT_PUBLIC_GATEWAY_URL="https://chocolate-quickest-roundworm-127.mypinata.cloud"
+NEXT_PUBLIC_GATEWAY_TOKEN=
+
+ALCHEMY_URL="https://eth-mainnet.g.alchemy.com/v2/<API_KEY_SECRET>"
+PRIVATE_KEY=""
+CONTRACT_ADDRESS=""
+
 DATABASE_URL="postgresql://user:password@localhost:5432/nftdb"
-PRIVATE_KEY="votre_clé_privée_pour_hardhat"
-RPC_URL="https://sepolia.infura.io/v3/<votre_api_key>"
+
+NEXTAUTH_SECRET=""
+NEXTAUTH_URL="http://localhost:3000/api/auth"
+
+STABILITY_AI_KEY="sk-..."
 ```
 
 ---
